@@ -1,0 +1,37 @@
+{
+  "name": "webpack-react-hmr-template",
+  "version": "1.0.0",
+  "description": "Template config for speedy development",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulthomasjerome/webpack-react-hmr-template.git"
+  },
+  "author": "paulthomasjerome",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/paulthomasjerome/webpack-react-hmr-template/issues"
+  },
+  "homepage": "https://github.com/paulthomasjerome/webpack-react-hmr-template#readme",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "autoprefixer": "^9.7.5",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
+    "html-webpack-plugin": "^4.0.4",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
