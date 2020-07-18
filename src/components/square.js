@@ -28,9 +28,23 @@ const WhiteDisc = styled(NoDisc)`
 `;
 
 const Square = props => {
+  let discType = null;
+
+  switch(props.discColor) {
+    case 0: 
+      discType = <BlackDisc/>;
+      break;
+    case 1: 
+      discType = <WhiteDisc/>;
+      break;
+    default:
+      discType = <NoDisc/>;
+      break;
+  }
+
   return (
      <SquareSection>
-       {props.discColor == 'black' ? <BlackDisc/> : <WhiteDisc/>}
+       {discType}
      </SquareSection>
   );
 }
