@@ -42,8 +42,12 @@ const Square = props => {
       break;
   }
 
+  const test = () => {
+    console.log(`Position: ROW ${props.rowIndex} Column ${props.columnIndex}`);
+  }
+
   return (
-     <SquareSection>
+     <SquareSection onClick={test} rowIndex={props.rowIndex} columnIndex={props.columnIndex}>
        {discType}
      </SquareSection>
   );

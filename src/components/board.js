@@ -26,7 +26,7 @@ const Board = props => {
   return (
     <BoardSection>
       {
-        boardState.map( row => row.map((column, columnIndex) => <Square discColor={row[columnIndex]}/>))
+        boardState.map( (row, rowIndex) => row.map((column, columnIndex) => <Square discColor={row[columnIndex]} rowIndex={rowIndex} columnIndex={columnIndex}/>))
       }
     </BoardSection>
   );

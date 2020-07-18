@@ -40,12 +40,16 @@ const processMove = (moveRow, moveCol, player, board) => {
 
   //if pieces were flipped
   if (piecesFlipped) {
+
     //this move is valid and the piece can be placed where the player has chosen
     board[moveRow][moveCol] = player;
+
     //switch players
     currentPlayer = opponent;
+
   //if no pieces were flipped
   } else {
+    
     //let the user know they need to make a new selection
     console.log('invalid move, try again');
   }
