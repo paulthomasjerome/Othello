@@ -6,9 +6,7 @@ const SquareSection = styled.div`
   background-color: green;
   box-sizing: border-box;
   border: solid 1px black;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+  float: left;
   height: 12.5%;
   width: 12.5%;
 `; 
@@ -32,7 +30,7 @@ const WhiteDisc = styled(NoDisc)`
 const Square = props => {
   return (
      <SquareSection>
-       {props.color == 0 ? <BlackDisc/> : <WhiteDisc/>}
+       {props.discColor == 'black' ? <BlackDisc/> : <WhiteDisc/>}
      </SquareSection>
   );
 }

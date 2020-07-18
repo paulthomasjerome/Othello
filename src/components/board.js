@@ -1,28 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import Square from './square.js';
 
-const board = [
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null,    0,    1, null, null, null],
-  [null, null, null,    1,    0, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-  [null, null, null, null, null, null, null, null],
-];
-
 const BoardSection = styled.div`
-  width: 50vh;
-  height: 50vh;
-  background: black;
+  width: 75vh;
+  height: 75vh;
+  background: orange;
 `; 
 
 const Board = props => {
+  
+  const [boardState, setBoardState] = useState(
+    [
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null,    0,    1, null, null, null],
+      [null, null, null,    1,    0, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null]
+    ]
+  );
+
   return (
     <BoardSection>
-      {board.map(row => row.map(column => <Square/>))}
+      {
+        boardState.map(row => row.map(column => <Square discColor=''/>))
+      }
     </BoardSection>
   );
 }
