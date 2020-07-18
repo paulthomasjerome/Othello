@@ -1,18 +1,12 @@
 import React from 'react';
-import FullPanel from './components/containers/FullPanel.js';
+import Board from './components/board.js';
 
 const App = () => {
   return (
     <div>
-      <FullPanel>
-
-      </FullPanel>
-      <FullPanel>
+      <Board>
         
-      </FullPanel>
-      <FullPanel>
-        
-      </FullPanel>
+      </Board>
     </div>
 
   );

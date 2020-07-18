@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": "jest",
+    "coverage": "jest --collectCoverage",
+    "watch": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paulthomasjerome/webpack-react-hmr-template.git"
+    "url": "git+https://github.com/paulthomasjerome/Othello.git"
   },
   "author": "paulthomasjerome",
   "license": "MIT",
@@ -30,8 +33,9 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-styled-components": "^1.10.7",
     "html-webpack-plugin": "^4.0.4",
+    "jest": "^26.1.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }
