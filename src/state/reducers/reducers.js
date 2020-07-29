@@ -1,3 +1,6 @@
+/* eslint-disable no-multi-spaces */
+import { MAKE_MOVE } from '../actions/actions.js';
+
 // instantiate the first player's color, black is 0 and white is 1
 // let currentPlayer = 0;
 
@@ -24,7 +27,7 @@ const processMove = (moveRow, moveCol, player, board) => {
   for (let vertical = -1; vertical <= 1; vertical++) {
     for (let horizontal = -1; horizontal <= 1; horizontal++) {
       // flip the pieces and record whether or not pieces were flipped
-      validMove = flipPieces (moveRow, moveCol, vertical, horizontal, player, opponent, board);
+      validMove = flipPieces(moveRow, moveCol, vertical, horizontal, player, opponent, board);
 
       // we find any valid flips
       if (validMove) {
@@ -114,6 +117,39 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
   return true;
 }
 
-// module.exports = processMove;
-exports.flipPieces = flipPieces;
-exports.processMove = processMove;
+const initialState = {
+  board: [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null,    0,    1, null, null, null],
+    [null, null, null,    1,    0, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+  ],
+};
+
+function processMoveReducer(state, action) {
+  if (typeof state === 'undefined') {
+    return initialState;
+  }
+
+  if (action.type === MAKE_MOVE) {
+    return Object.assign(
+      state,
+      {
+        board: processMove(
+          action.payload.row,
+          action.payload.col,
+          action.payload.player,
+          action.payload.board,
+        ),
+      }
+    );
+  }
+
+  return state;
+}
+
+export default processMoveReducer;

@@ -1,8 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
-import boardReducer from './slices/boardSlice.js';
+import { createStore } from 'redux';
+import processMoveReducer from './reducers/reducers.js';
 
-export default configureStore({
-  reducer: {
-    board: boardReducer,
-  },
-});
+const store = createStore(processMoveReducer);
+
+export default store;
