@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-//note that we stoped using float because we wanted the flexibility of changing the size of the discs 
+// note that we stoped using float because we wanted the flexibility of changing the size of the discs 
 const SquareSection = styled.div`
   background-color: green;
   box-sizing: border-box;
@@ -9,7 +9,7 @@ const SquareSection = styled.div`
   float: left;
   height: 12.5%;
   width: 12.5%;
-`; 
+`;
 
 const NoDisc = styled.div`
   background-color: transparent;
@@ -27,30 +27,30 @@ const WhiteDisc = styled(NoDisc)`
   background-color: #FFF;
 `;
 
-const Square = props => {
+const Square = (props) => {
   let discType = null;
 
-  switch(props.discColor) {
+  switch (props.discColor) {
     case 0: 
-      discType = <BlackDisc/>;
+      discType = <BlackDisc />;
       break;
     case 1: 
-      discType = <WhiteDisc/>;
+      discType = <WhiteDisc />;
       break;
     default:
-      discType = <NoDisc/>;
+      discType = <NoDisc />;
       break;
   }
 
   const test = () => {
     console.log(`Position: ROW ${props.rowIndex} Column ${props.columnIndex}`);
-  }
+  };
 
   return (
-     <SquareSection onClick={test} rowIndex={props.rowIndex} columnIndex={props.columnIndex}>
-       {discType}
-     </SquareSection>
+    <SquareSection onClick={test} rowIndex={props.rowIndex} columnIndex={props.columnIndex}>
+      {discType}
+    </SquareSection>
   );
-}
+};
 
 export default Square;
