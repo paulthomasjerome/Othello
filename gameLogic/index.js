@@ -24,7 +24,7 @@ const processMove = (moveRow, moveCol, player, board) => {
   for (let vertical = -1; vertical <= 1; vertical++) {
     for (let horizontal = -1; horizontal <= 1; horizontal++) {
       // flip the pieces and record whether or not pieces were flipped
-      validMove = flipPieces (moveRow, moveCol, vertical, horizontal, player, opponent, board);
+      validMove = flipPieces(moveRow, moveCol, vertical, horizontal, player, opponent, board);
 
       // we find any valid flips
       if (validMove) {
@@ -42,12 +42,14 @@ const processMove = (moveRow, moveCol, player, board) => {
     // switch players
     // currentPlayer = opponent;
 
-    return board;
+    return { boardState: board, player: opponent };
 
   // if no pieces were flipped
   } else {
     // let the user know they need to make a new selection
     console.log('invalid move, try again');
+    return { boardState: board, player };
+
   }
 }
 
@@ -78,14 +80,14 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
   let row = startRow + vertical;
   let col = startCol + horizontal;
 
-  if(board[row][col] === player) {
+  if (board[row][col] === player || row < 0 || row > 8 || col < 0 || col > 8) {
     return false;
   }
 
   // while we have not seen the players color
   while (board[row][col] !== player) {
     // if we have not seen the opponents piece before we see a blank space
-    if (board[row][col] === null) {
+    if (board[row][col] === null || row < 0 || row > 8 || col < 0 || col > 8) {
       // we cannot flip pieces in the passed in direction
       return false;
     }
@@ -112,7 +114,7 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
 
   // return that pieces were flipped
   return true;
-}
+};
 
 // module.exports = processMove;
 exports.flipPieces = flipPieces;
