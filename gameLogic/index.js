@@ -80,14 +80,18 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
   let row = startRow + vertical;
   let col = startCol + horizontal;
 
-  if (board[row][col] === player || row < 0 || row > 8 || col < 0 || col > 8) {
+  if (row === 8 || col === 8 || row === -1 || col === -1) {
+    return false;
+  }
+
+  if (board[row][col] === player) {
     return false;
   }
 
   // while we have not seen the players color
   while (board[row][col] !== player) {
     // if we have not seen the opponents piece before we see a blank space
-    if (board[row][col] === null || row < 0 || row > 8 || col < 0 || col > 8) {
+    if (board[row][col] === null) {
       // we cannot flip pieces in the passed in direction
       return false;
     }
@@ -104,6 +108,8 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
     // update the position we are checking
     row += vertical;
     col += horizontal;
+
+    if (row > 7 || col > 7 || row < 0 || col < 0) { return false; }
   }
 
   // for each of the positions we need to flip at
