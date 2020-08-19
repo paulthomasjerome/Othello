@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 import { processMove } from '../../../gameLogic/index';
 import { MAKE_MOVE } from '../actions/actions';
 
@@ -6,13 +7,14 @@ const initialState = {
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
-    [null, null, null, 0, 1, null, null, null],
-    [null, null, null, 1, 0, null, null, null],
+    [null, null, null,    0,    1, null, null, null],
+    [null, null, null,    1,    0, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null],
   ],
   player: 0,
+  totalValidMoves: 0,
 };
 
 const deepCopy = (currentArray) => {
@@ -29,17 +31,19 @@ function processMoveReducer(state = initialState, action) {
   if (action.type === MAKE_MOVE) {
     const newBoard = deepCopy(state.boardState);
 
-    const { boardState, player } = processMove(
+    const { boardState, player, totalValidMoves } = processMove(
       action.payload.row,
       action.payload.col,
       state.player,
       newBoard,
+      state.totalValidMoves,
     );
 
     return {
       ...state,
       boardState,
       player,
+      totalValidMoves,
     };
   }
 

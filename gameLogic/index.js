@@ -10,9 +10,9 @@
  * @param {number} player the current player
  * @param {array[][]} board the current board state
  */
-const processMove = (moveRow, moveCol, player, board) => {
+const processMove = (moveRow, moveCol, player, board, totalValidMoves) => {
   // set the current opponent
-  const opponent = (player === 0) ? 1 : 0;
+  const opponent = setOpponent(player);
 
   let piecesFlipped = false;
 
@@ -37,14 +37,16 @@ const processMove = (moveRow, moveCol, player, board) => {
     // this move is valid and the piece can be placed where the player has chosen
     board[moveRow][moveCol] = player;
 
+    totalValidMoves++;
+
     player = checkForValidMoves(board, opponent);
-    // return checkForValidMoves(board, opponent);
-    return { boardState: board, player };
+    console.log('total valid moves: ' + totalValidMoves);
+
+    return { boardState: board, player, totalValidMoves };
 
   // if no pieces were flipped
   } else {
-    console.log('invalid move, try again');
-    return { boardState: board, player };
+    return { boardState: board, player, totalValidMoves };
   }
 };
 
@@ -151,16 +153,12 @@ const deepCopy = (inputArray) => {
 const checkForValidMoves = (boardState, player) => {
   const opponent = setOpponent(player);
 
-  //for each space on the board
   for (let row = 0; row <= 7; row++) {
     for (let col = 0; col <= 7; col++) {
-      // if this space is empty
       if (boardState[row][col] === null) {
         for (let vertical = -1; vertical <= 1; vertical++) {
           for (let horizontal = -1; horizontal <= 1; horizontal++) {
-            // if pieces can be flipped
             if (flipPieces(row, col, vertical, horizontal, player, opponent, boardState).piecesFlipped) {
-              // return the passed in player
               return player;
             }
           }
@@ -168,7 +166,7 @@ const checkForValidMoves = (boardState, player) => {
       }
     }
   }
-  
+
   return opponent;
 };
 
@@ -182,26 +180,26 @@ const countScore = (gameOverBoard) => {
   let scoreForBlack = 0;
   let scoreForWhite = 0;
 
-  gameOverBoard.forEach(row => {
-    row.forEach(column => {
-      if (gameOverBoard[row][column] === 0) {
+  gameOverBoard.forEach((row, rowIndex) => {
+    row.forEach((column, columnIndex) => {
+      if (gameOverBoard[rowIndex][columnIndex] === 0) {
         scoreForBlack++;
       }
-      if (gameOverBoard[row][column] === 1) {
+      if (gameOverBoard[rowIndex][columnIndex] === 1) {
         scoreForWhite++;
       }
     });
   });
 
   if (scoreForBlack > scoreForWhite) {
-    return 0;
+    return 'Black Wins!';
   }
 
   if (scoreForWhite > scoreForBlack) {
-    return 1;
+    return 'White Wins';
   }
 
-  return 2;
+  return 'Stalemate';
 };
 
 // module.exports = processMove;
@@ -209,3 +207,4 @@ exports.flipPieces = flipPieces;
 exports.processMove = processMove;
 exports.deepCopy = deepCopy;
 exports.checkForValidMoves = checkForValidMoves;
+exports.countScore = countScore;
