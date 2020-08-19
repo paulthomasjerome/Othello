@@ -14,21 +14,19 @@ const processMove = (moveRow, moveCol, player, board) => {
   // set the current opponent
   const opponent = (player === 0) ? 1 : 0;
 
-  // instantiate flag for whether or not pieces have been flipped
   let piecesFlipped = false;
 
-  // initialize flag to track if we have made a valid move
-  let validMove = false;
+  let tryFlip = {};
 
   // check all directions
   for (let vertical = -1; vertical <= 1; vertical++) {
     for (let horizontal = -1; horizontal <= 1; horizontal++) {
-      // flip the pieces and record whether or not pieces were flipped
-      validMove = flipPieces(moveRow, moveCol, vertical, horizontal, player, opponent, board);
+      // get the state of the 
+      tryFlip = flipPieces(moveRow, moveCol, vertical, horizontal, player, opponent, board);
 
-      // we find any valid flips
-      if (validMove) {
-        // record that pieces are flipped indicating this is a valid move
+      // if we find any valid flips
+      if (tryFlip.piecesFlipped) {
+        board = deepCopy(tryFlip.boardState);
         piecesFlipped = true;
       }
     }
@@ -39,19 +37,16 @@ const processMove = (moveRow, moveCol, player, board) => {
     // this move is valid and the piece can be placed where the player has chosen
     board[moveRow][moveCol] = player;
 
-    // switch players
-    // currentPlayer = opponent;
-
-    return { boardState: board, player: opponent };
+    player = checkForValidMoves(board, opponent);
+    // return checkForValidMoves(board, opponent);
+    return { boardState: board, player };
 
   // if no pieces were flipped
   } else {
-    // let the user know they need to make a new selection
     console.log('invalid move, try again');
     return { boardState: board, player };
-
   }
-}
+};
 
 /**
  * The purpose of this function is flip pieces on the board if possible and inform the client
@@ -72,7 +67,9 @@ const processMove = (moveRow, moveCol, player, board) => {
  *
  * @return {boolean} Return true if pieces are flipped and false otherwise
  */
-const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, board) => {
+const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, inBoard) => {
+  const board = deepCopy(inBoard);
+  const returnObject = { boardState: board, piecesFlipped: false };
   // instantiate flipPositions
   const flipPositions = [];
 
@@ -80,20 +77,22 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
   let row = startRow + vertical;
   let col = startCol + horizontal;
 
+  // if the current move is not on the inBoard
   if (row === 8 || col === 8 || row === -1 || col === -1) {
-    return false;
+    return returnObject;
   }
 
+  // if the adjacent piece belongs to the current player
   if (board[row][col] === player) {
-    return false;
+    return returnObject;
   }
 
   // while we have not seen the players color
   while (board[row][col] !== player) {
     // if we have not seen the opponents piece before we see a blank space
     if (board[row][col] === null) {
-      // we cannot flip pieces in the passed in direction
-      return false;
+      // we cannot flip pieces in the passed in direction and the boardState is unchanged
+      return returnObject;
     }
 
     // if we see the opponents piece
@@ -109,19 +108,80 @@ const flipPieces = (startRow, startCol, vertical, horizontal, player, opponent, 
     row += vertical;
     col += horizontal;
 
-    if (row > 7 || col > 7 || row < 0 || col < 0) { return false; }
+    if (row > 7 || col > 7 || row < 0 || col < 0) {
+      return returnObject;
+    }
   }
+
+  returnObject.piecesFlipped = true;
 
   // for each of the positions we need to flip at
   for (let i = 0; i < flipPositions.length; i++) {
     // flip the pieces to the current players color
-    board[flipPositions[i].row][flipPositions[i].col] = player;
+    returnObject.boardState[flipPositions[i].row][flipPositions[i].col] = player;
   }
 
-  // return that pieces were flipped
-  return true;
+  return returnObject;
+};
+
+const deepCopy = (inputArray) => {
+  const outputArray = [];
+
+  for (let i = 0; i < inputArray.length; i++) {
+    outputArray[i] = inputArray[i].slice();
+  }
+
+  return outputArray;
+};
+
+/**
+ * checkForValidMoves
+ * 
+ * checks null squares untill it finds a valid move,
+ * if it finds a valid move it returns the passed in boardState
+ * and the player that was passed in, if it iterates through the
+ * whole boardState but does not find a valid move it returns the
+ * boardState and the oppisite player
+ * 
+ * @param {array[][]} boardState - the updated board state
+ * @param {bool} player - the next player
+ * 
+ * @returns {Object} - the board state and the correct player
+ */
+const checkForValidMoves = (boardState, player) => {
+  const opponent = setOpponent(player);
+
+  //for each space on the board
+  for (let row = 0; row <= 7; row++) {
+    for (let col = 0; col <= 7; col++) {
+      // if this space is empty
+      if (boardState[row][col] === null) {
+        for (let vertical = -1; vertical <= 1; vertical++) {
+          for (let horizontal = -1; horizontal <= 1; horizontal++) {
+            // get the state of the 
+            if (flipPieces(row, col, vertical, horizontal, player, opponent, boardState).piecesFlipped) {
+              // return the boardState and the passed in player
+              return player;
+            }
+            // if we have checked all of the null spaces
+            if (row === 7 && col === 7) {
+              return opponent;
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+const setOpponent = (player) => {
+  const opponent = (player === 0) ? 1 : 0;
+
+  return opponent;
 };
 
 // module.exports = processMove;
 exports.flipPieces = flipPieces;
 exports.processMove = processMove;
+exports.deepCopy = deepCopy;
+exports.checkForValidMoves = checkForValidMoves;

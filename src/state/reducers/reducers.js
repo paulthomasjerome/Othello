@@ -25,7 +25,6 @@ const deepCopy = (currentArray) => {
   return updated;
 };
 
-
 function processMoveReducer(state = initialState, action) {
   if (action.type === MAKE_MOVE) {
     const newBoard = deepCopy(state.boardState);

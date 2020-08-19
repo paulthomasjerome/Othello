@@ -2,6 +2,7 @@
 /* eslint-disable no-multi-spaces */
 import React from 'react';
 import styled from 'styled-components';
+// eslint-disable-next-line import/extensions
 import Square from './square.jsx';
 
 const BoardSection = styled.div`
