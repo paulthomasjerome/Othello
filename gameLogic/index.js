@@ -158,9 +158,9 @@ const checkForValidMoves = (boardState, player) => {
       if (boardState[row][col] === null) {
         for (let vertical = -1; vertical <= 1; vertical++) {
           for (let horizontal = -1; horizontal <= 1; horizontal++) {
-            // get the state of the 
+            // if pieces can be flipped
             if (flipPieces(row, col, vertical, horizontal, player, opponent, boardState).piecesFlipped) {
-              // return the boardState and the passed in player
+              // return the boardState and the passed in player as they have valid move to make
               return player;
             }
             // if we have checked all of the null spaces
@@ -178,6 +178,32 @@ const setOpponent = (player) => {
   const opponent = (player === 0) ? 1 : 0;
 
   return opponent;
+};
+
+const countScore = (gameOverBoard) => {
+  let scoreForBlack = 0;
+  let scoreForWhite = 0;
+
+  gameOverBoard.forEach(row => {
+    row.forEach(column => {
+      if (gameOverBoard[row][column] === 0) {
+        scoreForBlack++;
+      }
+      if (gameOverBoard[row][column] === 1) {
+        scoreForWhite++;
+      }
+    });
+  });
+
+  if (scoreForBlack > scoreForWhite) {
+    return 0;
+  }
+
+  if (scoreForWhite > scoreForBlack) {
+    return 1;
+  }
+
+  return 2;
 };
 
 // module.exports = processMove;
