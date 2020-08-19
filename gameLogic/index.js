@@ -160,18 +160,16 @@ const checkForValidMoves = (boardState, player) => {
           for (let horizontal = -1; horizontal <= 1; horizontal++) {
             // if pieces can be flipped
             if (flipPieces(row, col, vertical, horizontal, player, opponent, boardState).piecesFlipped) {
-              // return the boardState and the passed in player as they have valid move to make
+              // return the passed in player
               return player;
-            }
-            // if we have checked all of the null spaces
-            if (row === 7 && col === 7) {
-              return opponent;
             }
           }
         }
       }
     }
   }
+  
+  return opponent;
 };
 
 const setOpponent = (player) => {

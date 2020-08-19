@@ -1296,7 +1296,7 @@ describe('processMove', () => {
 });
 
 describe('checkValidMoves', () => {
-  it('should not swap players if the next player has no valid moves', () => {
+  it('should not swap players if the next player has valid moves', () => {
     const noValidMoveFor0 = [
       [null, null, null, null, null, null, null, null],
       [null, null, null,    1, null, null, null, null],
@@ -1310,5 +1310,21 @@ describe('checkValidMoves', () => {
 
     //if it should be zero's turn next but they can't make a move than it is 1's turn again
     expect(checkForValidMoves(noValidMoveFor0, 1)).toEqual(1);
+  });
+
+  it('should swap players if the next player has no valid moves', () => {
+    const noValidMoveFor1 = [
+      [   1,    1,    1,    1,    1,    1,    1,    0],
+      [   1,    1,    1,    1,    1,    1,    0,    0],
+      [   1,    1,    1,    0,    0,    0,    1,    0],
+      [   0,    1,    1,    0,    0,    1,    0,    0],
+      [   0,    1,    1,    1,    1,    1,    1,    0],
+      [   0,    1,    1,    1,    1,    0,    1,    0],
+      [   1,    1,    1,    1,    1,    1,    0,    0],
+      [null, null, null, null, null,    0,    0,    0],
+    ];
+
+    //if it should be zero's turn next but they can't make a move than it is 1's turn again
+    expect(checkForValidMoves(noValidMoveFor1, 1)).toEqual(0);
   });
 });
