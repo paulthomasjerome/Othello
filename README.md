@@ -1,2 +1,2 @@
-# webpack-react-hmr-template
-A config for starting a hot-reloaded react front-end project without the headaches
+# Othello
+My take on Othello, a game enjoyed by the ancients almost as much as I love it today. This project has taught me so much about programming, from unit testing to architecture to understanding some pretty whacky ES6 features. The goal for this project is to have a full stack web application where two players can invite eachother to a session and play a game of Othello over HTTPS. My current plan is to be ready for release on my website by November of 2020.
