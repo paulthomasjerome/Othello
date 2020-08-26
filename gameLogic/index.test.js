@@ -27,7 +27,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(3, 5, 0, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(3, 4, 0, -1, 0, 1, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -337,7 +337,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(2, 4, 1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(3, 4, 1, 0, 0, 1, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -365,7 +365,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(5, 4, -1, 0, 1, 0, board);
+    const piecesFlipped = flipPieces(4, 4, -1, 0, 1, 0, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -393,7 +393,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(3, 2, 0, 1, 1, 0, board);
+    const piecesFlipped = flipPieces(3, 3, 0, 1, 1, 0, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -421,7 +421,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(3, 5, 0, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(3, 4, 0, -1, 0, 1, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -449,7 +449,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(2, 2, 1, 1, 1, 0, board);
+    const piecesFlipped = flipPieces(3, 3, 1, 1, 1, 0, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -477,7 +477,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(5, 5, -1, -1, 1, 0, board);
+    const piecesFlipped = flipPieces(4, 4, -1, -1, 1, 0, board);
 
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -505,7 +505,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(2, 5, 1, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(3, 4, 1, -1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -533,13 +533,13 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(5, 2, -1, 1, 0, 1, board);
-  
+    const piecesFlipped = flipPieces(4, 3, -1, 1, 0, 1, board);
+
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
   });
 
-  //it should not flip pieces if it encounters null first
+  // it should not flip pieces if it encounters null first
   it('Should not flip pieces from north to south if it encounters null first', () => {
     const board = [
       [null, null, null, null, null, null, null, null],
@@ -567,7 +567,7 @@ describe('flipPieces', () => {
     expect(piecesFlipped.piecesFlipped).toBe(false);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
   });
-  
+
   it('Should not flip pieces from south to north if it encounters null first', () => {
     const board = [
       [null, null, null, null, null, null, null, null],
@@ -786,7 +786,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 7, 1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(1, 7, 1, 0, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -814,7 +814,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 7, 0, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(0, 6, 0, -1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -842,7 +842,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 7, 1, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(1, 6, 1, -1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -870,7 +870,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 0, 1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(1, 0, 1, 0, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -899,7 +899,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 0, 0, 1, 0, 1, board);
+    const piecesFlipped = flipPieces(0, 1, 0, 1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -927,7 +927,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(0, 0, 1, 1, 0, 1, board);
+    const piecesFlipped = flipPieces(1, 1, 1, 1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -955,7 +955,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 0, -1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(6, 0, -1, 0, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -983,7 +983,7 @@ describe('flipPieces', () => {
       [null,    0,    0, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 0, 0, 1, 0, 1, board);
+    const piecesFlipped = flipPieces(7, 1, 0, 1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -1011,7 +1011,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 0, -1, 1, 0, 1, board);
+    const piecesFlipped = flipPieces(6, 1, -1, 1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -1039,7 +1039,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 7, -1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(6, 7, -1, 0, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -1067,8 +1067,8 @@ describe('flipPieces', () => {
       [null, null, null, null, null,    0,    0, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 7, 0, -1, 0, 1, board);
-  
+    const piecesFlipped = flipPieces(7, 6, 0, -1, 0, 1, board);
+
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
   });
@@ -1095,7 +1095,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(7, 7, -1, -1, 0, 1, board);
+    const piecesFlipped = flipPieces(6, 6, -1, -1, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -1123,7 +1123,7 @@ describe('flipPieces', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const piecesFlipped = flipPieces(5, 4, -1, 0, 0, 1, board);
+    const piecesFlipped = flipPieces(4, 4, -1, 0, 0, 1, board);
   
     expect(piecesFlipped.piecesFlipped).toBe(true);
     expect(piecesFlipped.boardState).toEqual(boardAfter);
@@ -1292,6 +1292,23 @@ describe('processMove', () => {
     const processMoveResult = processMove(3, 3, 0, board2);
 
     expect(processMoveResult.boardState).toEqual(boardAfter);
+  });
+
+  it('Should end the game when a player has generated a stalemate', () => {
+    const board2 = [
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0,    0,    1],
+      [   0,    0,    0,    0,    0,    0,    0,    0],
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0, null, null],
+      [   0,    0,    0,    0,    0,    0, null,    1],
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0,    0,    0],
+    ];
+
+    const processMoveResult = processMove(0, 7, 0, board2);
+
+    expect(processMoveResult.isGameOver).toBe(true);
   });
 });
 

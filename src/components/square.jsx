@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import styled from 'styled-components';
 
 const SquareSection = styled.div`
@@ -51,6 +52,13 @@ const Square = ({
       {discType}
     </SquareSection>
   );
+};
+
+Square.propTypes = {
+  makeMoveCallback: PropTypes.func.isRequired,
+  discColor: PropTypes.bool.isRequired,
+  rowIndex: PropTypes.number.isRequired,
+  columnIndex: PropTypes.number.isRequired,
 };
 
 export default Square;

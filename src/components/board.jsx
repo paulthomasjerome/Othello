@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-multi-spaces */
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 // eslint-disable-next-line import/extensions
 import Square from './square.jsx';
@@ -11,7 +12,10 @@ const BoardSection = styled.div`
   background: orange;
 `;
 
-const Board = ({ boardState, makeMoveCallback }) => (
+const Board = ({
+  boardState,
+  makeMoveCallback,
+}) => (
   <BoardSection>
     {
       boardState.map(
@@ -31,5 +35,10 @@ const Board = ({ boardState, makeMoveCallback }) => (
     }
   </BoardSection>
 );
+
+Board.propTypes = {
+  boardState: PropTypes.arrayOf(PropTypes.array).isRequired,
+  makeMoveCallback: PropTypes.func.isRequired,
+};
 
 export default Board;

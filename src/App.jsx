@@ -1,16 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import makeMove from './state/actions/actions';
 import TurnTracker from './components/turnTracker.jsx';
 import Board from './components/board.jsx';
-import styled from 'styled-components';
-
 
 // eslint-disable-next-line spaced-comment
 const mapStateToProps = (state /*, ownProps*/) => ({
   boardState: state.boardState,
   player: state.player,
-  totalValidMoves: state.totalValidMoves,
+  isGameOver: state.isGameOver,
 });
 
 const BoardWrapper = styled.div`
@@ -20,12 +20,17 @@ const BoardWrapper = styled.div`
 
 const mapDispatchToProps = { makeMove };
 
-const App = ({ boardState, player, totalValidMoves, makeMove }) => (
+const App = ({
+  boardState,
+  player,
+  isGameOver,
+  makeMove,
+}) => (
   <div>
     <TurnTracker
       boardState={boardState}
       player={player}
-      totalValidMoves={totalValidMoves}
+      isGameOver={isGameOver}
     />
     <BoardWrapper>
       <Board
@@ -35,6 +40,13 @@ const App = ({ boardState, player, totalValidMoves, makeMove }) => (
     </BoardWrapper>
   </div>
 );
+
+App.propTypes = {
+  boardState: PropTypes.arrayOf(PropTypes.array).isRequired,
+  player: PropTypes.number.isRequired,
+  isGameOver: PropTypes.bool.isRequired,
+  makeMove: PropTypes.func.isRequired,
+};
 
 export default connect(
   mapStateToProps,

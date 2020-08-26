@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { countScore } from '../../gameLogic/index';
 
@@ -9,11 +10,15 @@ const TurnTrackerSection = styled.div`
   color: black;
 `;
 
-const TurnTracker = ({ player, boardState, totalValidMoves }) => {
+const TurnTracker = ({
+  player,
+  boardState,
+  isGameOver,
+}) => {
   let message = '';
 
   switch (player) {
-    case 0: 
+    case 0:
       message = 'Black\'s Turn';
       break;
     case 1:
@@ -22,9 +27,9 @@ const TurnTracker = ({ player, boardState, totalValidMoves }) => {
     default:
       message = 'Something is wrong';
       break;
-  };
+  }
 
-  if (totalValidMoves >= 60) {
+  if (isGameOver) {
     message = countScore(boardState);
   }
 
@@ -33,6 +38,12 @@ const TurnTracker = ({ player, boardState, totalValidMoves }) => {
       { message }
     </TurnTrackerSection>
   );
+};
+
+TurnTracker.propTypes = {
+  player: PropTypes.number.isRequired,
+  boardState: PropTypes.arrayOf(PropTypes.array).isRequired,
+  isGameOver: PropTypes.bool.isRequired,
 };
 
 export default TurnTracker;
