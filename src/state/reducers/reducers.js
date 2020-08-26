@@ -3,6 +3,7 @@ import { deepCopy } from '../../../gameLogic/index';
 import { processMove } from '../../../gameLogic/index';
 import { MAKE_MOVE } from '../actions/actions';
 
+// initial game state
 const initialState = {
   boardState: [
     [null, null, null, null, null, null, null, null],
@@ -18,6 +19,7 @@ const initialState = {
   isGameOver: false,
 };
 
+// root reducer
 function processMoveReducer(state = initialState, action) {
   if (action.type === MAKE_MOVE) {
     const newBoard = deepCopy(state.boardState);
