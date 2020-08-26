@@ -123,7 +123,8 @@ const isOutOfBounds = (moveRow, moveColumn) => {
  * @param {number} opponent the current opponent
  * @param {array[][]} board the current board state
  *
- * @returns {Object} - whether or not pieces are flipped and (if pieces are flipped) the updated board state
+ * @returns {Object} - whether or not pieces are flipped and (if pieces are flipped) the
+ * updated board state
  */
 const flipPieces = (startRow, startColumn, vertical, horizontal, player, opponent, inBoard) => {
   const board = deepCopy(inBoard);
