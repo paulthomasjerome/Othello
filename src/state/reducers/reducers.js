@@ -1,6 +1,5 @@
 /* eslint-disable no-multi-spaces */
-import { deepCopy } from '../../../gameLogic/index';
-import { processMove } from '../../../gameLogic/index';
+import { deepCopy, processMove } from '../../../gameLogic/index';
 import { MAKE_MOVE } from '../actions/actions';
 
 // initial game state
@@ -29,7 +28,6 @@ function processMoveReducer(state = initialState, action) {
       action.payload.col,
       state.player,
       newBoard,
-      state.isGameOver,
     );
 
     return {
