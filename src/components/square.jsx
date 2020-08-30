@@ -56,7 +56,7 @@ const Square = ({
 
 Square.propTypes = {
   makeMoveCallback: PropTypes.func.isRequired,
-  discColor: PropTypes.bool.isRequired,
+  discColor: PropTypes.number.isRequired,
   rowIndex: PropTypes.number.isRequired,
   columnIndex: PropTypes.number.isRequired,
 };
