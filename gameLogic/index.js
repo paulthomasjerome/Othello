@@ -413,7 +413,7 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn,
   }
 
   // for each piece we need to flip
-  for (let index = 0; index < numberOfPiecesToFlip; index++) {
+  for (let index = 0; index <= numberOfPiecesToFlip; index++) {
     if (board[startRow + (index * rowIncrementScalar)][startColumn + (index * columnIncrementScalar)] === opponent) {
       // flip to the players color
       board[startRow + (index * rowIncrementScalar)][startColumn + (index * columnIncrementScalar)] = player;
