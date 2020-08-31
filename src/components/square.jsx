@@ -19,6 +19,10 @@ const NoDisc = styled.div`
   width: 100%;
 `;
 
+const NoDiscValid = styled(NoDisc)`
+  border-color: yellow;
+`;
+
 const BlackDisc = styled(NoDisc)`
   background-color: #000;
 `;
@@ -42,8 +46,11 @@ const Square = ({
     case 1:
       discType = <WhiteDisc />;
       break;
-    default:
+    case 'valid':
       discType = <NoDisc />;
+      break;
+    default:
+      discType = <NoDiscValid />;
       break;
   }
 
