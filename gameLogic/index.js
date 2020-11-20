@@ -133,6 +133,7 @@ const wouldFlipPiecesInGivenDirection = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
+
   // set the value of the opponent
   const opponent = setOpponent(player);
 
@@ -151,29 +152,30 @@ const wouldFlipPiecesInGivenDirection = (
     // return returnObject
     return returnObject;
   }
+  //TODO fix the problem where we have infinite loop because verticalTranslation and horizontalTranslation can be zero or negative
 
-  // moving out in the given direction
-  for (let rowIndex = adjacentRow; rowIndex < 8; rowIndex += verticalTranslation) {
-    for (let columnIndex = adjacentColumn; columnIndex < 8; columnIndex += horizontalTranslation) {
-      // if we hit null
-      if (boardState[rowIndex][columnIndex] === null) {
-        // return returnObject
-        return returnObject;
-      }
 
-      // if we hit our own piece
-      if (boardState[rowIndex][columnIndex] === player) {
-        // record the position of the piece we just hit in the return object
-        returnObject.row = rowIndex;
-        returnObject.column = columnIndex;
+  let nextRow = moveRow + verticalTranslation;
+  let nextColumn = moveColumn + horizontalTranslation;
 
-        // return the postion of the piece we just hit
-        return returnObject;
-      }
+  // while the row and collumn we are checking are on the board and don't contain the players piece
+  while (isOnBoard(nextRow, nextColumn) && boardState[nextRow][nextColumn] !== player) {
+    // if we hit null
+    if (boardState[nextRow][nextColumn] === null) {
+      // return returnObject
+      return returnObject;
     }
+
+    // update the row and column we are checking
+    nextRow += verticalTranslation;
+    nextColumn += horizontalTranslation;
   }
 
-  // we hit the edge of the board, return returnObject
+  // record the row and column we hit last
+  returnObject.row = nextRow;
+  returnObject.column = nextColumn;
+
+  // return updated returnObject
   return returnObject;
 };
 
@@ -430,12 +432,11 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn,
  * 
  * @param {function} callback1 - the callback function we run for every direction
  */
-// for each direction
-const forEveryDirection = (callback1) => {
+const forEveryDirection = (callback) => {
   for (let verticalTranslation = -1; verticalTranslation <= 1; verticalTranslation++) {
     for (let horizontalTranslation = -1; horizontalTranslation <= 1; horizontalTranslation++) {
       // run callback function
-      callback1();
+      callback();
     }
   }
 };
@@ -445,3 +446,5 @@ exports.deepCopy = deepCopy;
 exports.countScore = countScore;
 exports.flipPiecesInOneDirection = flipPiecesInOneDirection;
 exports.sortByArrayDepth = sortByArrayDepth;
+exports.flipPiecesInAllDirections = flipPiecesInAllDirections;
+exports.wouldFlipPiecesInGivenDirection = wouldFlipPiecesInGivenDirection;
