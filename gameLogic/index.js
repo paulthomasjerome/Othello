@@ -137,7 +137,7 @@ const flipPieces = (startRow, startColumn, vertical, horizontal, player, opponen
   let column = startColumn;
 
   // if the current move is not on the inBoard
-  if (isOnBoard(row, column)) {
+  if (!isOnBoard(row, column)) {
     // return initial returnObject
     return returnObject;
   }
