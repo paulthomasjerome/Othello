@@ -478,6 +478,34 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
  * with the positions of valid moves marked and a boolean of whether or not 
  * there is any
  */
+
+const getValidMoves = (boardState, player) => {
+  // make a copy of the boardState
+  const board = deepCopy(boardState);
+
+  // initialize valid moves flag
+  let isAnyValidMoves = false;
+
+  // for every space on the board
+  for(let row = 0; row < 8; row++) {
+    for(let column = 0; column < 8; column++) {
+      // if this space is empty
+      if(board[row][column] === null) {
+        // if this is a valid move for the current player
+        if(isValidMove(board, player, row, column)) {
+          // mark space as valid and set flag to true
+          board[row][column] = 2;
+          isAnyValidMoves = true;
+        }
+      }
+    }
+  }
+  // return the updated board and whether or not there were valid moves
+  return {
+    board,
+    isAnyValidMoves
+  }
+}
 // make a clean copy of the board
 // initialize a flag to indicate if there are any valid moves
 // for every space on the board
@@ -493,6 +521,21 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
  * takes in the starting move, boardState, the player and uses that information
  * to return the updated boardState
  */
+const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
+    const board = deepCopy(boardState);
+    // for each distinct vertical translation we can apply
+    for (let vertical = -1; vertical <= 1; vertical++) {
+      // for each distinct horizontal translation we can apply
+      for (let horizontal = -1; horizontal <= 1; horizontal++) {
+        let endPieceData = wouldFlipPiecesInGivenDirection(boardState, player, moveRow, moveColumn, vertical, horizontal);
+        if(endPieceData) {
+          board = deepCopy(flipPiecesInOneDirection(boardState, endPieceData, moveRow, moveColumn));
+        }
+      }
+    }
+    return board;
+}
+
 // for each direction starting from the move
 // check if pieces can be flipped in current direction
 // if pieces can be flipped
@@ -619,6 +662,15 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn)
  * 
  * takes in a function and runs that function for every direction
  */
+const forEveryDirection = (callback) => {
+  // for each distinct vertical translation we can apply
+  for (let vertical = -1; vertical <= 1; vertical++) {
+    // for each distinct horizontal translation we can apply
+    for (let horizontal = -1; horizontal <= 1; horizontal++) {
+     callback(vertical, horizontal);
+    }
+  }
+}
 // for each direction
 // run callback function
 
