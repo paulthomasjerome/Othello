@@ -508,21 +508,21 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
  * @param {*} moveRow 
  * @param {*} moveColumn 
  */
-const sortByArrayDepth = (row1, row2, column1, column2) => {
+ const sortByArrayDepth = (row1, row2, column1, column2) => {
   if (row1 > row2 || column1 > column2) {
     return {
-      shallowRow: row1,
-      shallowColumn: column1,
-      deepRow: row2,
-      deepColumn: column2,
+      startRow: row1,
+      startColumn: column1,
+      endRow: row2,
+      endColumn: column2
     };
   }
   if (row1 < row2 || column1 < column2) {
     return {
-      shallowRow: row2,
-      shallowColumn: column2,
-      deepRow: row1,
-      deepColumn: column1,
+      startRow: row2,
+      startColumn: column2,
+      endRow: row1,
+      endColumn: column1
     };
   }
   return null;
@@ -534,8 +534,8 @@ const sortByArrayDepth = (row1, row2, column1, column2) => {
 /**
  * flipPiecesInOneDirection
  *
- * takes in the endPieces object and the players moveRow and moveColumn
- * for this turn and the boardStae and flips the pieces in a straight line
+ * takes in the endPieces object, the players moveRow and moveColumn
+ * for this turn, and the boardState and flips the pieces in a straight line
  * between them, returns the updated boardState
  *
  * @param {array[][]} boardState - the board state
@@ -562,56 +562,48 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn)
   // if this flip is vertical
   if (endColumn - startColumn === 0) {
     // record the number of pieces flipped from each row
-    numberOfPiecesToFlip = endRow - startRow;
+    numberOfPiecesToFlip = startRow - endRow;
   } else {
     // record the number of pieces flipped for each column
-    numberOfPiecesToFlip = endColumn - startColumn;
+    numberOfPiecesToFlip = startColumn - endColumn;
   }
 
-  for (let index = 1; index <= numberOfPiecesToFlip; index++) {
-  // console.log(board[startRow][startColumn]);
-  // console.log(board[startRow + index][startColumn]);
-  console.log(board[startRow][startColumn + index]);
-  // console.log(board[startRow + index][startColumn + index]);
-
-  // determine direction from coordinates
-  // if the difference of hoizontals and difference of verticals is not 0
+  // for each piece we need to flip
+  for (let index = 1; index < numberOfPiecesToFlip; index++) {
+    // if this flip is diagonal
     if ((moveRow - endPieceData.row) !== 0 && (moveColumn - endPieceData.column !== 0)) {
-    // this flip is diagonal
       // if this piece belongs to white
-      if (board[startRow + index][startColumn + index] === 1) {
+      if (board[startRow - index][startColumn - index] === 1) {
         // flip to black
-        board[startRow + index][startColumn + index] = 0;
+        board[startRow - index][startColumn - index] = 0;
         // otherwise
       } else {
         // flip to white
-        board[startRow + index][startColumn + index] = 1;
+        board[startRow - index][startColumn - index] = 1;
       }
     }
-    // if the difference of horizontals is 0
+    // if this flip is vertical
     if (moveColumn - endPieceData.column === 0) {
-    // this flip is vertical
       // if this piece belongs to white
-      if (board[startRow + index][startColumn] === 1) {
+      if (board[startRow - index][startColumn] === 1) {
         // flip to black
-        board[startRow + index][startColumn] = 0;
+        board[startRow - index][startColumn] = 0;
         // otherwise
       } else {
         // flip to white
-        board[startRow + index][startColumn] = 1;
+        board[startRow - index][startColumn] = 1;
       }
     }
-    // if the difference of verticals is 0
+    // if this flip is horizontal
     if (moveRow - endPieceData.row === 0) {
-    // this flip is horizontal
       // if this piece belongs to white
-      if (board[startRow][startColumn + index] === 1) {
+      if (board[startRow][startColumn - index] === 1) {
         // flip to black
-        board[startRow][startColumn + index] = 0;
+        board[startRow][startColumn - index] = 0;
       // otherwise
       } else {
         // flip to white
-        board[startRow][startColumn + index] = 1;
+        board[startRow][startColumn - index] = 1;
       }
     }
   }
