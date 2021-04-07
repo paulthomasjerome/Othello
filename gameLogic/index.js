@@ -262,92 +262,92 @@ const checkForValidMoves = (boardState, player) => {
  *
  * @returns {Object} the next player, boardState, and isGameOver status
  */
-const processMove = (moveRow, moveColumn, playerState, boardState) => {
-  // make local copy of the player state
-  let player = playerState;
+// const processMove = (moveRow, moveColumn, playerState, boardState) => {
+//   // make local copy of the player state
+//   let player = playerState;
 
-  // make local copy of the board state
-  let board = deepCopy(boardState);
+//   // make local copy of the board state
+//   let board = deepCopy(boardState);
 
-  // make local copy of the isGameOver state
-  let isGameOver = false;
+//   // make local copy of the isGameOver state
+//   let isGameOver = false;
 
-  // instantiate opponent
-  const opponent = setOpponent(player);
+//   // instantiate opponent
+//   const opponent = setOpponent(player);
 
-  // instantiate piecesFlipped
-  let piecesFlipped = false;
+//   // instantiate piecesFlipped
+//   let piecesFlipped = false;
 
-  // instantiate tryFlip
-  let tryFlip = {};
+//   // instantiate tryFlip
+//   let tryFlip = {};
 
-  // instantiate adjacentRow
-  let adjacentRow = 0;
+//   // instantiate adjacentRow
+//   let adjacentRow = 0;
 
-  // instantiate adjacentColumn
-  let adjacentColumn = 0;
+//   // instantiate adjacentColumn
+//   let adjacentColumn = 0;
 
-  // for each distinct vertical translation we can apply
-  for (let vertical = -1; vertical <= 1; vertical++) {
-    // for each distinct horizontal translation we can apply
-    for (let horizontal = -1; horizontal <= 1; horizontal++) {
-      // store the value of the adjacent row index
-      adjacentRow = moveRow + vertical;
+//   // for each distinct vertical translation we can apply
+//   for (let vertical = -1; vertical <= 1; vertical++) {
+//     // for each distinct horizontal translation we can apply
+//     for (let horizontal = -1; horizontal <= 1; horizontal++) {
+//       // store the value of the adjacent row index
+//       adjacentRow = moveRow + vertical;
 
-      // store the value of the adjacent column index
-      adjacentColumn = moveColumn + horizontal;
+//       // store the value of the adjacent column index
+//       adjacentColumn = moveColumn + horizontal;
 
-      // try to flip pieces
-      tryFlip = flipPieces(
-        adjacentRow,
-        adjacentColumn,
-        vertical,
-        horizontal,
-        player,
-        opponent,
-        board,
-      );
+//       // try to flip pieces
+//       tryFlip = flipPieces(
+//         adjacentRow,
+//         adjacentColumn,
+//         vertical,
+//         horizontal,
+//         player,
+//         opponent,
+//         board,
+//       );
 
-      // if pieces were flipped
-      if (tryFlip.piecesFlipped) {
-        // update the boardState by replacing its contents with the contents of tryFlip.boardState
-        board = deepCopy(tryFlip.boardState);
+//       // if pieces were flipped
+//       if (tryFlip.piecesFlipped) {
+//         // update the boardState by replacing its contents with the contents of tryFlip.boardState
+//         board = deepCopy(tryFlip.boardState);
 
-        // set piecesFlipped to true
-        piecesFlipped = true;
-      }
-    }
-  }
+//         // set piecesFlipped to true
+//         piecesFlipped = true;
+//       }
+//     }
+//   }
 
-  // if pieces were flipped
-  if (piecesFlipped) {
-    // place the players piece in the spot they have chosen to play
-    board[moveRow][moveColumn] = player;
+//   // if pieces were flipped
+//   if (piecesFlipped) {
+//     // place the players piece in the spot they have chosen to play
+//     board[moveRow][moveColumn] = player;
 
-    // set player value to the value of opponent if the opponent has at least one valid move to make
-    player = checkForValidMoves(board, opponent);
+//     // set player value to the value of opponent if the opponent has at least one valid move to make
+//     player = checkForValidMoves(board, opponent);
 
-    // if player is the player that just played, and that same player has no valid moves
-    if (player === board[moveRow][moveColumn] && checkForValidMoves(board, player) === opponent) {
-      // set isGameOver to true
-      isGameOver = true;
-    }
+//     // if player is the player that just played, and that same player has no valid moves
+//     if (player === board[moveRow][moveColumn] && checkForValidMoves(board, player) === opponent) {
+//       // set isGameOver to true
+//       isGameOver = true;
+//     }
 
-    // return the updated boardState, the appropriate player, and whether or not the game is over
-    return {
-      boardState: board,
-      player,
-      isGameOver,
-    };
-  }
+//     // return the updated boardState, the appropriate player, and whether or not the game is over
+//     return {
+//       boardState: board,
+//       player,
+//       isGameOver,
+//     };
+//   }
 
-  // no pieces were flipped, return the same game state values that were passed in
-  return {
-    boardState: board,
-    player,
-    isGameOver,
-  };
-};
+//   // no pieces were flipped, return the same game state values that were passed in
+//   return {
+//     boardState: board,
+//     player,
+//     isGameOver,
+//   };
+// };
 
 
 /**
@@ -366,26 +366,26 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
 
 
 
-// const processMove = (moveRow, moveColumn, playerState, boardState) => {
-//   let player = playerState;
+const processMove = (moveRow, moveColumn, playerState, boardState) => {
+  let player = playerState;
 
-//   let board = deepCopy(boardState);
+  let board = deepCopy(boardState);
 
-//   let isGameOver = false;
+  let isGameOver = false;
 
-//   const opponent = setOpponent(player);
+  const opponent = setOpponent(player);
 
-//   if(isValidMove(board, player, moveRow, moveColumn)) {
-//     board[moveRow][moveColumn] = player;
-//     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
-//     player = 1;
-//     return {
-//       boardState: board,
-//       player,
-//       isGameOver,
-//     }
-//   }
-// }
+  if(isValidMove(board, player, moveRow, moveColumn)) {
+    board[moveRow][moveColumn] = player;
+    board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
+    player = opponent;
+    return {
+      boardState: board,
+      player,
+      isGameOver,
+    }
+  }
+}
 
 /**
   * wouldFlipPiecesInGivenDirection
@@ -412,9 +412,10 @@ const wouldFlipPiecesInGivenDirection = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
+
+  let board = deepCopy(boardState);
   // set the value of the opponent
   const opponent = setOpponent(player);
-
   // store value indices of the adjacent piece
   const adjacentRow = moveRow + verticalTranslation;
   const adjacentColumn = moveColumn + horizontalTranslation;
@@ -422,50 +423,76 @@ const wouldFlipPiecesInGivenDirection = (
   // initialize returnObject
   const returnObject = {
     row: null,
-    col: null,
+    column: null,
   };
 
   // if the adjacent place in the given direction is not the opponent
-  if (boardState[adjacentRow][adjacentColumn] !== opponent) {
+  if (board[adjacentRow][adjacentColumn] !== opponent) {
     // return returnObject
     return returnObject;
   }
-
   // moving out in the given direction
-  for (let rowIndex = adjacentRow; rowIndex < 8; rowIndex += verticalTranslation) {
-    for (let columnIndex = adjacentColumn; columnIndex < 8; columnIndex += horizontalTranslation) {
+  if(verticalTranslation === 0) {
+    for (let columnIndex = adjacentColumn; columnIndex < 8; columnIndex+=horizontalTranslation) {
       // if we hit null
-      if (boardState[rowIndex][columnIndex] === null) {
+      if (board[moveRow][columnIndex] === null) {
         // return returnObject
         return returnObject;
       }
 
       // if we hit our own piece
-      if (boardState[rowIndex][columnIndex] === player) {
+      if (board[moveRow][columnIndex] === player) {
         // record the position of the piece we just hit in the return object
-        returnObject.row = rowIndex;
+        returnObject.row = moveRow;
         returnObject.column = columnIndex;
-
         // return the postion of the piece we just hit
         return returnObject;
       }
     }
   }
+  else if(horizontalTranslation === 0) {
+    for (let rowIndex = adjacentRow; rowIndex < 8; rowIndex+=verticalTranslation) {
+      // if we hit null
+      if (board[rowIndex][moveColumn] === null) {
+        // return returnObject
+        return returnObject;
+      }
 
+      // if we hit our own piece
+      if (board[rowIndex][moveColumn] === player) {
+        // record the position of the piece we just hit in the return object
+        returnObject.row = rowIndex;
+        returnObject.column = moveColumn;
+        // return the postion of the piece we just hit
+        return returnObject;
+      }
+    }
+  }
+  else {
+    for (let rowIndex = adjacentRow; rowIndex < 8; rowIndex+=verticalTranslation) {
+      for (let columnIndex = adjacentColumn; columnIndex < 8; columnIndex+=horizontalTranslation) {
+        // if we hit null
+        if (board[rowIndex][columnIndex] === null) {
+          // return returnObject
+          console.log(returnObject);
+          return returnObject;
+        }
+  
+        // if we hit our own piece
+        if (board[rowIndex][columnIndex] === player) {
+          // record the position of the piece we just hit in the return object
+          returnObject.row = rowIndex;
+          returnObject.column = columnIndex;
+          // return the postion of the piece we just hit
+          return returnObject;
+        }
+      }
+    }
+  }
   // we hit the edge of the board, return returnObject
   return returnObject;
 };
-// initialize returnObject
-// if the adjacent place in the given direction is not the opponent
-  // return returnObject
-// moving out in the given direction
-  // if we hit the edge of the board
-// return returnObject
-  // if we hit null
-// return returnObject
-  // if we hit our own piece
-// return the postion of the piece we just hit
-//----------------------------------------------------------------------------------------------------------------------
+
 /**
  * isValidMove
  *
@@ -480,6 +507,7 @@ const wouldFlipPiecesInGivenDirection = (
  * @return {boolean}
  */
 const isValidMove = (boardState, player, moveRow, moveColumn) => {
+  let board = deepCopy(boardState);
   // check if this move is on the board
   if (!isOnBoard(moveRow, moveColumn)) {
     return false;
@@ -490,7 +518,7 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
     for (let horizontalTranslation = -1; horizontalTranslation <= 1; horizontalTranslation++) {
       // if it would flip pieces
       if (wouldFlipPiecesInGivenDirection(
-        boardState,
+        board,
         player,
         moveRow,
         moveColumn,
@@ -506,15 +534,6 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
   // return false
   return false;
 };
-
-// check if this move is on the board
-// check if this move flips pieces
-// for each direction extending from where the move was made
-// if it would flip pieces
-// return true
-// return false
-
-//----------------------------------------------------------------------------------------------------------------------
 
 /**
  * getValidMoves
@@ -572,10 +591,10 @@ const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
     for (let vertical = -1; vertical <= 1; vertical++) {
       // for each distinct horizontal translation we can apply
       for (let horizontal = -1; horizontal <= 1; horizontal++) {
-        let endPieceData = wouldFlipPiecesInGivenDirection(boardState, player, moveRow, moveColumn, vertical, horizontal);
+        let endPieceData = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, vertical, horizontal);
         
         if(endPieceData.row) {
-          board = deepCopy(flipPiecesInOneDirection(boardState, endPieceData, moveRow, moveColumn));
+          board = deepCopy(flipPiecesInOneDirection(board, endPieceData, moveRow, moveColumn));
         }
       }
     }
