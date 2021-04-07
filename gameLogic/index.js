@@ -96,19 +96,6 @@ const deepCopy = (inputArray) => {
 };
 
 /**
- * isOnBoard
- *
- * @param {number} moveRow,
- * @param {number} moveColumn,
- *
- * @returns {boolean} - true if the moveRow index or the moveCol index are on
- * the board, false otherwise
- */
-const isOnBoard = (moveRow, moveColumn) => {
-  return !(moveRow >= 8 || moveColumn >= 8 || moveRow <= -1 || moveColumn <= -1);
-};
-
-/**
  * flipPieces
  *
  * Flip pieces on the board if possible and record whether or not
@@ -240,6 +227,27 @@ const checkForValidMoves = (boardState, player) => {
   return opponent;
 };
 
+// const processMove = (moveRow, moveColumn, playerState, boardState) => {
+//   let player = playerState;
+
+//   let board = deepCopy(boardState);
+
+//   let isGameOver = false;
+
+//   const opponent = setOpponent(player);
+
+//   if(isValidMove(board, player, moveRow, moveColumn)) {
+//     board[moveRow][moveColumn] = player;
+//     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
+//     player = 1;
+//     return {
+//       boardState: board,
+//       player,
+//       isGameOver,
+//     }
+//   }
+// }
+
 /**
  * processMove
  *
@@ -341,6 +349,43 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
   };
 };
 
+
+/**
+ * isOnBoard
+ *
+ * @param {number} moveRow,
+ * @param {number} moveColumn,
+ *
+ * @returns {boolean} - true if the moveRow index or the moveCol index are on
+ * the board, false otherwise
+ */
+ const isOnBoard = (moveRow, moveColumn) => {
+  return !(moveRow >= 8 || moveColumn >= 8 || moveRow <= -1 || moveColumn <= -1);
+};
+
+
+
+
+// const processMove = (moveRow, moveColumn, playerState, boardState) => {
+//   let player = playerState;
+
+//   let board = deepCopy(boardState);
+
+//   let isGameOver = false;
+
+//   const opponent = setOpponent(player);
+
+//   if(isValidMove(board, player, moveRow, moveColumn)) {
+//     board[moveRow][moveColumn] = player;
+//     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
+//     player = 1;
+//     return {
+//       boardState: board,
+//       player,
+//       isGameOver,
+//     }
+//   }
+// }
 
 /**
   * wouldFlipPiecesInGivenDirection
@@ -481,7 +526,7 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
 
 const getValidMoves = (boardState, player) => {
   // make a copy of the boardState
-  const board = deepCopy(boardState);
+  let board = deepCopy(boardState);
 
   // initialize valid moves flag
   let isAnyValidMoves = false;
@@ -522,13 +567,14 @@ const getValidMoves = (boardState, player) => {
  * to return the updated boardState
  */
 const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
-    const board = deepCopy(boardState);
+    let board = deepCopy(boardState);
     // for each distinct vertical translation we can apply
     for (let vertical = -1; vertical <= 1; vertical++) {
       // for each distinct horizontal translation we can apply
       for (let horizontal = -1; horizontal <= 1; horizontal++) {
         let endPieceData = wouldFlipPiecesInGivenDirection(boardState, player, moveRow, moveColumn, vertical, horizontal);
-        if(endPieceData) {
+        
+        if(endPieceData.row) {
           board = deepCopy(flipPiecesInOneDirection(boardState, endPieceData, moveRow, moveColumn));
         }
       }
@@ -592,8 +638,7 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn)
   let numberOfPiecesToFlip = 0;
 
   // make a local copy of the boardState
-  const board = deepCopy(boardState);
-
+  let board = deepCopy(boardState);
   // determine which piece to start counting from and end on
   const {
     startRow,
@@ -655,26 +700,6 @@ const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn)
 };
 
 
-//
-//----------------------------------------------------------------------------------------------------------------------
-/**
- * forEveryDirection
- * 
- * takes in a function and runs that function for every direction
- */
-const forEveryDirection = (callback) => {
-  // for each distinct vertical translation we can apply
-  for (let vertical = -1; vertical <= 1; vertical++) {
-    // for each distinct horizontal translation we can apply
-    for (let horizontal = -1; horizontal <= 1; horizontal++) {
-     callback(vertical, horizontal);
-    }
-  }
-}
-// for each direction
-// run callback function
-
-
 // export functions needed in other files
 exports.flipPieces = flipPieces;
 exports.processMove = processMove;
@@ -682,3 +707,6 @@ exports.deepCopy = deepCopy;
 exports.checkForValidMoves = checkForValidMoves;
 exports.countScore = countScore;
 exports.flipPiecesInOneDirection = flipPiecesInOneDirection;
+exports.flipPiecesInAllDirections = flipPiecesInAllDirections;
+exports.isValidMove = isValidMove;
+exports.wouldFlipPiecesInGivenDirection = wouldFlipPiecesInGivenDirection;
