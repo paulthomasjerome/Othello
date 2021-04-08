@@ -227,27 +227,6 @@ const checkForValidMoves = (boardState, player) => {
   return opponent;
 };
 
-// const processMove = (moveRow, moveColumn, playerState, boardState) => {
-//   let player = playerState;
-
-//   let board = deepCopy(boardState);
-
-//   let isGameOver = false;
-
-//   const opponent = setOpponent(player);
-
-//   if(isValidMove(board, player, moveRow, moveColumn)) {
-//     board[moveRow][moveColumn] = player;
-//     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
-//     player = 1;
-//     return {
-//       boardState: board,
-//       player,
-//       isGameOver,
-//     }
-//   }
-// }
-
 /**
  * processMove
  *
@@ -359,12 +338,9 @@ const checkForValidMoves = (boardState, player) => {
  * @returns {boolean} - true if the moveRow index or the moveCol index are on
  * the board, false otherwise
  */
- const isOnBoard = (moveRow, moveColumn) => {
+const isOnBoard = (moveRow, moveColumn) => {
   return !(moveRow >= 8 || moveColumn >= 8 || moveRow <= -1 || moveColumn <= -1);
 };
-
-
-
 
 const processMove = (moveRow, moveColumn, playerState, boardState) => {
   let player = playerState;
@@ -388,13 +364,10 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
 }
 
 /**
-  * wouldFlipPiecesInGivenDirection
+  * getEndPieceData - takes in the board, current player, player move indices,
+  * and direction to check for an end piece and returns an object containing
+  * the indices of the end piece
   *
-  * if a move on a board and one direciton would flip pieces in that direction
-  *
-  * given a boardstate, player, move, and direction
-  *
-  * return true if pieces would be flipped, false otherwise
   * @param {array[][]} boardState
   * @param {number} player
   * @param {number} moveRow
@@ -412,6 +385,7 @@ const getEndPieceData = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
+  
   // initialize endPieceData 
   const endPieceData = {
     row: null,
