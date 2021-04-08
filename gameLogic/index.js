@@ -412,10 +412,12 @@ const wouldFlipPiecesInGivenDirection = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
-
+  // make a clean copy of the board
   let board = deepCopy(boardState);
+
   // set the value of the opponent
   const opponent = setOpponent(player);
+
   // store value indices of the adjacent piece
   const adjacentRow = moveRow + verticalTranslation;
   const adjacentColumn = moveColumn + horizontalTranslation;
@@ -468,16 +470,26 @@ const wouldFlipPiecesInGivenDirection = (
       }
     }
   }
-  else {
+  else if (adjacentRow !== 0 && adjacentColumn !== 0){
+    let counter = 0;
     for (let rowIndex = adjacentRow; rowIndex < 8; rowIndex+=verticalTranslation) {
       for (let columnIndex = adjacentColumn; columnIndex < 8; columnIndex+=horizontalTranslation) {
+        // console.log('at iteration ' + counter + ' row index: ' + rowIndex + ' and col index: ' + columnIndex );
+        // console.log('adjacent row: ' + adjacentRow + ' adj col: ' + adjacentColumn);
         // if we hit null
+        if(board[rowIndex][columnIndex] === opponent) {
+          rowIndex+=verticalTranslation;
+          columnIndex+=horizontalTranslation;
+        }
+
         if (board[rowIndex][columnIndex] === null) {
           // return returnObject
-          console.log(returnObject);
+          // console.log(board[rowIndex][columnIndex]);
+          // console.log("row index: " + rowIndex + " col index: " + columnIndex);
+          // console.log(returnObject);
           return returnObject;
         }
-  
+        // console.log('how come we dont hit our own piece here? ' + rowIndex + '  ' + columnIndex);
         // if we hit our own piece
         if (board[rowIndex][columnIndex] === player) {
           // record the position of the piece we just hit in the return object
@@ -486,6 +498,7 @@ const wouldFlipPiecesInGivenDirection = (
           // return the postion of the piece we just hit
           return returnObject;
         }
+        counter++;
       }
     }
   }
@@ -524,7 +537,7 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
         moveColumn,
         verticalTranslation,
         horizontalTranslation,
-      )) {
+      ).row) {
         // return true
         return true;
       }
@@ -587,62 +600,61 @@ const getValidMoves = (boardState, player) => {
  */
 const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
     let board = deepCopy(boardState);
-    // for each distinct vertical translation we can apply
-    for (let vertical = -1; vertical <= 1; vertical++) {
-      // for each distinct horizontal translation we can apply
-      for (let horizontal = -1; horizontal <= 1; horizontal++) {
-        let endPieceData = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, vertical, horizontal);
+    // let counter = 0;
+    // // for each distinct vertical translation we can apply
+    // for (let vertical = -1; vertical <= 1; vertical++) {
+    //   // for each distinct horizontal translation we can apply
+    //   for (let horizontal = -1; horizontal <= 1; horizontal++) {
+    //     // console.log('iteration: ' + counter);
+    //     let endPieceData = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, vertical, horizontal);
         
-        if(endPieceData.row) {
-          board = deepCopy(flipPiecesInOneDirection(board, endPieceData, moveRow, moveColumn));
-        }
-      }
-    }
+    //     if(endPieceData.row) {
+    //       board = deepCopy(flipPiecesInOneDirection(board, endPieceData, moveRow, moveColumn));
+    //     }
+    //     counter++;
+    //   }
+    // }
+
+    console.log(board);
+
+
+    let endPieceData1 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, -1, 0);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData1, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData2 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, -1, 1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData2, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData3 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, 0, 1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData3, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData4 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, 1, 1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData4, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData5 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, 1, 0);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData5, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData6 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, 1, -1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData6, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData7 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, 0, -1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData7, moveRow, moveColumn));
+    console.log(board);
+
+    let endPieceData8 = wouldFlipPiecesInGivenDirection(board, player, moveRow, moveColumn, -1, -1);
+    board = deepCopy(flipPiecesInOneDirection(board, endPieceData8, moveRow, moveColumn));
+    console.log(board);
+
     return board;
 }
 
-// for each direction starting from the move
-// check if pieces can be flipped in current direction
-// if pieces can be flipped
-// flip them
-// return the new boardState
-//----------------------------------------------------------------------------------------------------------------------
 /**
- * sortByArrayDepth 
- * 
- * sorts two sets of indices by their relative depth in a matrix
- * @param {*} boardState 
- * @param {*} endPieceData 
- * @param {*} moveRow 
- * @param {*} moveColumn 
- */
- const sortByArrayDepth = (row1, row2, column1, column2) => {
-  if (row1 > row2 || column1 > column2) {
-    return {
-      startRow: row1,
-      startColumn: column1,
-      endRow: row2,
-      endColumn: column2
-    };
-  }
-  if (row1 < row2 || column1 < column2) {
-    return {
-      startRow: row2,
-      startColumn: column2,
-      endRow: row1,
-      endColumn: column1
-    };
-  }
-  return null;
-};
-
-
-
-
-/**
- * flipPiecesInOneDirection
- *
- * takes in the endPieces object, the players moveRow and moveColumn
+ * flipPiecesInOneDirection - takes in the endPieces object, the players moveRow and moveColumn
  * for this turn, and the boardState and flips the pieces in a straight line
  * between them, returns the updated boardState
  *
@@ -653,70 +665,128 @@ const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
  * 
  * @return {array[][]} board - the board after pieces have been flipped 
  */
-const flipPiecesInOneDirection = (boardState, endPieceData, moveRow, moveColumn) => {
-  let numberOfPiecesToFlip = 0;
-
+const flipPiecesInOneDirection = (boardState, player, endPieceData, moveRow, moveColumn) => {
   // make a local copy of the boardState
   let board = deepCopy(boardState);
-  // determine which piece to start counting from and end on
-  const {
-    startRow,
-    endRow,
-    startColumn,
-    endColumn,
-  } = sortByArrayDepth(moveRow, endPieceData.row, moveColumn, endPieceData.column);
 
-  // if this flip is vertical
-  if (endColumn - startColumn === 0) {
-    // record the number of pieces flipped from each row
-    numberOfPiecesToFlip = startRow - endRow;
-  } else {
-    // record the number of pieces flipped for each column
-    numberOfPiecesToFlip = startColumn - endColumn;
-  }
+  // get and store the direction to flip pieces in
+  const flipDirection = getFlipDirecion(moveRow, moveColumn, endPieceData.row, endPieceData.column);
 
-  // for each piece we need to flip
-  for (let index = 1; index < numberOfPiecesToFlip; index++) {
-    // if this flip is diagonal
-    if ((moveRow - endPieceData.row) !== 0 && (moveColumn - endPieceData.column !== 0)) {
-      // if this piece belongs to white
-      if (board[startRow - index][startColumn - index] === 1) {
-        // flip to black
-        board[startRow - index][startColumn - index] = 0;
-        // otherwise
-      } else {
-        // flip to white
-        board[startRow - index][startColumn - index] = 1;
-      }
-    }
-    // if this flip is vertical
-    if (moveColumn - endPieceData.column === 0) {
-      // if this piece belongs to white
-      if (board[startRow - index][startColumn] === 1) {
-        // flip to black
-        board[startRow - index][startColumn] = 0;
-        // otherwise
-      } else {
-        // flip to white
-        board[startRow - index][startColumn] = 1;
-      }
-    }
-    // if this flip is horizontal
-    if (moveRow - endPieceData.row === 0) {
-      // if this piece belongs to white
-      if (board[startRow][startColumn - index] === 1) {
-        // flip to black
-        board[startRow][startColumn - index] = 0;
-      // otherwise
-      } else {
-        // flip to white
-        board[startRow][startColumn - index] = 1;
-      }
+  // get and store the number of pieces to flip
+  const numberOfPiecesToFlip = getNumberOfPiecesToFlip(moveRow, moveColumn, endPieceData.row, endPieceData.column);
+
+  // for all pieces that need to be flipped
+  for(let index = 1; index <= numberOfPiecesToFlip; index++) {
+    // flip in the appropriate direction 
+    switch(flipDirection) {
+      case 'south': 
+        board[moveRow + index][moveColumn] = player;
+        break;
+      case 'north':
+        board[moveRow - index][moveColumn] = player;
+        break;
+      case 'east':
+        board[moveRow][moveColumn + index] = player;
+        break;
+      case 'west':
+        board[moveRow][moveColumn - index] = player;
+        break;
+      case 'northeast':
+        board[moveRow - index][moveColumn + index] = player;
+        break;
+      case 'northwest':
+        board[moveRow - index][moveColumn - index] = player;
+        break;
+      case 'southeast':
+        board[moveRow + index][moveColumn + index] = player;
+        break;
+      case 'southwest':
+        board[moveRow + index][moveColumn - index] = player;
+        break;
+      default:
+        break;
     }
   }
   // return the updated board
   return board;
-};
+}
+
+/**
+ * getFlipDirection - get the direction to flip pieces from the indices of the end pieces
+ * that make it flippable
+ * @param {*} moveRow 
+ * @param {*} moveColumn 
+ * @param {*} endPieceRow 
+ * @param {*} endPieceColumn 
+ * @returns 
+ */
+const getFlipDirecion = (moveRow, moveColumn, endPieceRow, endPieceColumn) => {
+  // if this flip is vertical
+  if (moveColumn === endPieceColumn) {
+    // if this flip is south
+    if (moveRow < endPieceRow) {
+      return 'south';
+    }
+    // if this flip is north
+    if (moveRow > endPieceRow) {
+      return 'north';
+    }
+  }
+  // if this flip is horizontal
+  else if (moveRow === endPieceRow) {
+    // if this flip is east
+    if (moveColumn < endPieceColumn) {
+      return 'east';
+    }
+    // if this flip is west
+    else if (moveColumn > endPieceColumn) {
+      return 'west';
+    }
+  }
+  // if this move is diagonal
+  else if(moveRow !== endPieceRow && moveColumn !== endPieceColumn) {
+    // if this flip is northeast
+    if (moveRow > endPieceRow && moveColumn < endPieceColumn) {
+      return 'northeast';
+    }
+    // if this flip is northwest
+    else if (moveRow > endPieceRow && moveColumn > endPieceColumn) {
+      return 'northwest';
+    }
+    // if this flip is southeast
+    else if (moveRow < endPieceRow && moveColumn > endPieceColumn) {
+      return 'southeast';
+    }
+    // if this flip is southwest
+    else if (moveRow < endPieceRow && moveColumn > endPieceColumn) {
+      return 'southwest';
+    }
+  }
+}
+
+/**
+ * getNumberOfPiecesToFlip - get the number of flippable pieces from the difference in end piece
+ * indices
+ * 
+ * @param {*} moveRow 
+ * @param {*} moveColumn 
+ * @param {*} endPieceRow 
+ * @param {*} endPieceColumn 
+ * @returns 
+ */
+const getNumberOfPiecesToFlip = (moveRow, moveColumn, endPieceRow, endPieceColumn) => {
+  // find the magnitude of the difference in row index
+  const rowDifferenceMagnitude = Math.abs(moveRow - endPieceRow);
+  const columnDifferenceMagnitude = Math.abs(moveColumn - endPieceColumn);
+
+  // find the greater of the index difference magnitudes and subtract 1 to get number of pieces to flip
+  const numberOfPiecesToFlip = Math.max(rowDifferenceMagnitude, columnDifferenceMagnitude) - 1;
+  
+  // return the number of pieces to flip
+  return numberOfPiecesToFlip;
+
+}
+
 
 
 // export functions needed in other files
@@ -729,3 +799,4 @@ exports.flipPiecesInOneDirection = flipPiecesInOneDirection;
 exports.flipPiecesInAllDirections = flipPiecesInAllDirections;
 exports.isValidMove = isValidMove;
 exports.wouldFlipPiecesInGivenDirection = wouldFlipPiecesInGivenDirection;
+exports.getFlipDirecion = getFlipDirecion;
