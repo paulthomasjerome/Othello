@@ -366,14 +366,14 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
 /**
   * getEndPieceData - takes in the board, current player, player move indices,
   * and direction to check for an end piece and returns an object containing
-  * the indices of the end piece
+  * the indices of the players end piece in that given direction
   *
-  * @param {array[][]} boardState
-  * @param {number} player
-  * @param {number} moveRow
-  * @param {number} moveColumn
-  * @param {number} verticalTranslation
-  * @param {number} horizontalTranslation
+  * @param {array[][]} boardState the current state of the board at the time the function is called
+  * @param {number} player the current player
+  * @param {number} moveRow the row index of the players move
+  * @param {number} moveColumn the column index of the players move
+  * @param {number} verticalTranslation used to determine vertical direction
+  * @param {number} horizontalTranslation used to determine horizontal direction
   * 
   * @return {Object} - the row and column of the piece that completes the flip or the initial returnObject
   */
@@ -385,7 +385,7 @@ const getEndPieceData = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
-  
+
   // initialize endPieceData 
   const endPieceData = {
     row: null,
@@ -475,7 +475,6 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
  * with the positions of valid moves marked and a boolean of whether or not 
  * there is any
  */
-
 const getValidMoves = (boardState, player) => {
   // make a copy of the boardState
   let board = deepCopy(boardState);
@@ -525,13 +524,9 @@ const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
     for (let vertical = -1; vertical <= 1; vertical++) {
       // for each distinct horizontal translation we can apply
       for (let horizontal = -1; horizontal <= 1; horizontal++) {
-        // console.log('iteration: ' + counter);
-        endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
-        console.log('vertical is: ' + vertical + ' horizontal is: ' + horizontal);
+        console.log(board);
         
-        if(vertical === 0 && vertical === horizontal) {
-          break;
-        }
+        endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
 
         if(endPieceData.row) {
           board = deepCopy(flipPiecesInOneDirection(board, player, endPieceData, moveRow, moveColumn));
