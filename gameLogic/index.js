@@ -671,6 +671,7 @@ const flipPiecesInOneDirection = (boardState, player, endPieceData, moveRow, mov
 
   // get and store the direction to flip pieces in
   const flipDirection = getFlipDirecion(moveRow, moveColumn, endPieceData.row, endPieceData.column);
+  console.log(flipDirection);
 
   // get and store the number of pieces to flip
   const numberOfPiecesToFlip = getNumberOfPiecesToFlip(moveRow, moveColumn, endPieceData.row, endPieceData.column);
@@ -698,6 +699,7 @@ const flipPiecesInOneDirection = (boardState, player, endPieceData, moveRow, mov
         board[moveRow - index][moveColumn - index] = player;
         break;
       case 'southeast':
+        console.log('are we not htting this?')
         board[moveRow + index][moveColumn + index] = player;
         break;
       case 'southwest':
@@ -754,7 +756,7 @@ const getFlipDirecion = (moveRow, moveColumn, endPieceRow, endPieceColumn) => {
       return 'northwest';
     }
     // if this flip is southeast
-    else if (moveRow < endPieceRow && moveColumn > endPieceColumn) {
+    else if (moveRow < endPieceRow && moveColumn < endPieceColumn) {
       return 'southeast';
     }
     // if this flip is southwest

@@ -130,6 +130,36 @@ describe('flipPiecesInOneDirection', () => {
     expect(flipPiecesInOneDirection(testBoardBefore, 0, endPieceData, 0, 0)).toEqual(testBoardAfter);
   });
 
+  it('should flip pieces to the northwest', () => {
+    const testBoardBefore = [
+      [   0, null, null, null, null, null, null, null],
+      [null,    1, null, null, null, null, null, null],
+      [null, null,    0, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    const endPieceData = {
+      row: 2,
+      column: 2,
+    };
+
+    const testBoardAfter = [
+      [   0, null, null, null, null, null, null, null],
+      [null,    0, null, null, null, null, null, null],
+      [null, null,    0, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+    expect(flipPiecesInOneDirection(testBoardBefore, 0, endPieceData, 0, 0)).toEqual(testBoardAfter);
+  });
+
   it('should flip multiple pieces in one direction', () => {
     const testBoardBefore = [
       [   0,    1,    1,    1,    1,    1,    1,    0],
