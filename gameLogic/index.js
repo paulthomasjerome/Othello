@@ -117,26 +117,38 @@ const isOnBoard = (moveRow, moveColumn) => {
  * @returns 
  */
 const processMove = (moveRow, moveColumn, playerState, boardState) => {
-  console.log(';alsdjf;lkajsdlk;fjal;skdfjl;kasdjf');
-
+  // store a local copy of the current player
   let player = playerState;
 
+  // store a local copy of the board
   let board = deepCopy(boardState);
 
+  // store the inital state of game progress
   let isGameOver = false;
 
+  // set the opponent based on the given player
   const opponent = setOpponent(player);
 
+  // if this is a valid move
   if(isValidMove(board, player, moveRow, moveColumn)) {
+    // execute valid flips and store resulting boardstate
     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
+
+    // set a player piece down at the placement they have chosen
     board[moveRow][moveColumn] = player
+    
+    // change players
     player = opponent;
+
+    // return game state
     return {
       boardState: board,
       player,
       isGameOver,
     }
   }
+
+  // return gameState
   return {
     boardState: board,
     player,
@@ -178,10 +190,6 @@ const getEndPieceData = (
   // store the next indices in the given direction
   let nextRow = moveRow + verticalTranslation;
   let nextColumn = moveColumn + horizontalTranslation;
-  // console.log(nextRow + ' is the next row and    ' + nextColumn + ' is the next col');
-  // if(typeof board[nextRow] === undefined) {
-  //   return endPieceData;
-  // }
 
   // exit if next row/column are not on the board
   if(!isOnBoard(nextRow, nextColumn)) {
@@ -190,6 +198,7 @@ const getEndPieceData = (
 
   // store the identity of the opponent 
   const opponent = setOpponent(player);
+
   // if the adjacent piece does not belong to opponent
   if (board[nextRow][nextColumn] !== opponent) {
     return endPieceData;
@@ -197,16 +206,6 @@ const getEndPieceData = (
   
   // while we have not seen a valid end piece
   while (board[nextRow][nextColumn] !== player) {
-    console.log(board[nextRow][nextColumn]);
-    
-    // if(typeof board[nextRow] === undefined) {
-    //   return endPieceData;
-    // }
-
-    if(!isOnBoard(nextRow, nextColumn)) {
-      return endPieceData;
-    }
-
     // if we hit an empty space or move past the edge of the board
     if (board[nextRow][nextColumn] === null) {
       // return that no end piece was found
@@ -216,7 +215,10 @@ const getEndPieceData = (
     // move indices to the next row/column in this direction
     nextRow += verticalTranslation;
     nextColumn += horizontalTranslation;
+
+    // if the next position to check is not on the board
     if(!isOnBoard(nextRow, nextColumn)) {
+      // return null endPieceData
       return endPieceData;
     }
   }
