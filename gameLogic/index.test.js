@@ -6,6 +6,29 @@ const processMove = gameLogic.processMove;
 const flipPiecesInOneDirection = gameLogic.flipPiecesInOneDirection;
 const flipPiecesInAllDirections = gameLogic.flipPiecesInAllDirections;
 const getEndPieceData = gameLogic.getEndPieceData;
+const getValidMoves = gameLogic.getValidMoves;
+const isValidMove = gameLogic.isValidMove;
+
+// const board = [
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+// ];
+// const boardAfter = [
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+//   [null, null, null, null, null, null, null, null],
+// ];
 
 describe('flipPiecesInOneDirection', () => {
   it('should flip pieces to the north', () => {
@@ -233,11 +256,6 @@ describe('flipPiecesInOneDirection', () => {
       [null, null, null, null, null, null, null, null],
     ];
 
-    const endPieceData = {
-      row: 0,
-      column: 7,
-    };
-
     const testBoardAfter = [
       [   0,    0,    0,    0,    0,    0,    0,    0],
       [null, null, null, null, null, null, null, null],
@@ -248,7 +266,7 @@ describe('flipPiecesInOneDirection', () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
     ];
-    expect(flipPiecesInOneDirection(testBoardBefore, 0, endPieceData, 0, 0)).toEqual(testBoardAfter);
+    expect(flipPiecesInOneDirection(testBoardBefore, 0, {row: 0, column: 7}, 0, 0)).toEqual(testBoardAfter);
   });
 });
 
@@ -265,6 +283,7 @@ describe('flipPiecesInAllDirections', () => {
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
     ];
+    
     const boardAfter = [
       [null, null, null, null, null, null, null, null],
       [null,    0,    0,    0,    0,    0, null, null],
@@ -281,60 +300,32 @@ describe('flipPiecesInAllDirections', () => {
     expect(flipPiecesResult).toEqual(boardAfter);
   });
 
-  it('Should handle moves on the east edge of the board', () => {
+  it.only('Should handle flipping multiple pieces in the northwest corner', () => {
     const board = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null,    0,    1, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-    ];
-    const boardAfter = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null,    0,    0, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-    ];
-    const flipPiecesResult = flipPiecesInAllDirections(3, 7, board, 0);
-
-    expect(flipPiecesResult).toEqual(boardAfter);
-  });
-
-  it('should handle strange boundry error found 4/8/21', () => {
-    const board = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null,    0,    1, null, null],
-      [null, null,    1,    0,    1,    1, null, null],
-      [null, null,    0,    1,    1,    1, null, null],
-      [null,    0,    0,    0,    0, null, null, null],
       [null,    1,    0, null, null, null, null, null],
-      [null, null,    0, null, null, null, null, null],
+      [   1,    1, null, null, null, null, null, null],
+      [   0, null,    0, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
     ];
-
     const boardAfter = [
+      [null,    0,    0, null, null, null, null, null],
+      [   0,    0, null, null, null, null, null, null],
+      [   0, null,    0, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
       [null, null, null, null, null, null, null, null],
-      [null, null, null, null,    0,    1, null, null],
-      [null, null,    1,    0,    1,    1, null, null],
-      [null, null,    0,    1,    1,    1, null, null],
-      [null,    0,    0,    1,    1, null, null, null],
-      [null,    1,    1, null, null, null, null, null],
-      [null, null,    0, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
     ];
-
+    const flipPiecesResult = flipPiecesInAllDirections(0, 0, board, 0);
   
-    const flipPiecesResult = flipPiecesInAllDirections(6, 3, board, 1);
-    
     expect(flipPiecesResult).toEqual(boardAfter);
   });
+
 });
 
 describe('processMove', () => {
@@ -516,38 +507,9 @@ describe('processMove', () => {
 
   //   expect(processMoveResult.isGameOver).toBe(true);
   // });
-
-  it('should handle strange boundry error found 4/8/21', () => {
-    const board = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null,    0,    1, null, null],
-      [null, null,    1,    0,    1,    1, null, null],
-      [null, null,    0,    1,    1,    1, null, null],
-      [null,    0,    0,    0,    0, null, null, null],
-      [null,    1,    0, null, null, null, null, null],
-      [null, null,    0, null, null, null, null, null],
-    ];
-
-    const boardAfter = [
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null],
-      [null, null, null, null,    0,    1, null, null],
-      [null, null,    1,    0,    1,    1, null, null],
-      [null, null,    0,    1,    1,    1, null, null],
-      [null,    0,    0,    1,    1, null, null, null],
-      [null,    1,    1,    1, null, null, null, null],
-      [null, null,    0, null, null, null, null, null],
-    ];
-
-  
-    const processMoveResult = processMove(6, 3, 1, board);
-    
-    expect(processMoveResult.boardState).toEqual(boardAfter);
-  });
 });
 
-describe('wouldFlipPiecesInGivenDirection', () => {
+describe('getEndPieceData', () => {
   it('should return an end piece from the north', () => {
     const board = [
       [null, null, null, null, null, null, null, null],
@@ -709,4 +671,23 @@ describe('wouldFlipPiecesInGivenDirection', () => {
     expect(wouldFlipResult.row).toEqual(null);
     expect(wouldFlipResult.column).toEqual(null);
   });
+
+  it('should return diagonal endpiece in the northwest corner', () => {
+    const board = [
+      [null, null, null, null, null, null, null, null],
+      [null,    1, null, null, null, null, null, null],
+      [null, null,    0, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    const wouldFlipResult = getEndPieceData(board, 0, 0, 0, 1, 1);
+
+    expect(wouldFlipResult.row).toEqual(2);
+    expect(wouldFlipResult.column).toEqual(2);
+  });
+
 });

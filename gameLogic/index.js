@@ -326,10 +326,9 @@ const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
 
         // attempt to store the endPieceData
         endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
-        
+        console.log(endPieceData);
         // if the endPieceExists
         if(endPieceData.row) {
-
           // use the endPieceData to flip appropriate pieces in the appropriate direction
           board = deepCopy(flipPiecesInOneDirection(board, player, endPieceData, moveRow, moveColumn));
         }
@@ -439,6 +438,7 @@ const getFlipDirecion = (moveRow, moveColumn, endPieceRow, endPieceColumn) => {
     }
     // if this flip is northwest
     else if (moveRow > endPieceRow && moveColumn > endPieceColumn) {
+      console.log(';laksdj;lka');
       return 'northwest';
     }
     // if this flip is southeast
@@ -477,6 +477,7 @@ const getNumberOfPiecesToFlip = (moveRow, moveColumn, endPieceRow, endPieceColum
 
 // export functions needed in other files
 exports.processMove = processMove;
+exports.getValidMoves = getValidMoves;null
 exports.deepCopy = deepCopy;
 exports.countScore = countScore;
 exports.flipPiecesInOneDirection = flipPiecesInOneDirection;
