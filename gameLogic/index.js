@@ -96,240 +96,6 @@ const deepCopy = (inputArray) => {
 };
 
 /**
- * flipPieces
- *
- * Flip pieces on the board if possible and record whether or not
- * pieces were flipped
- *
- *
- * @param {number} startRow the row index of the first position to check for an opponents piece
- * @param {number} startColumn the column index of the first position to check for the players piece
- * @param {number} vertical helper to translate the row index when checking for the players piece
- * @param {number} horizontal helper to translate the column index when checking for the players piece
- * @param {number} player the current player
- * @param {number} opponent the current opponent
- * @param {array[][]} board the current board state
- *
- * @returns {Object} - whether or not pieces are flipped and (if pieces are flipped) the
- * updated board state
- */
-const flipPieces = (startRow, startColumn, vertical, horizontal, player, opponent, inBoard) => {
-  const board = deepCopy(inBoard);
-  const returnObject = { boardState: board, piecesFlipped: false };
-  // instantiate flipPositions
-  const flipPositions = [];
-
-  // store the first space we need to check in the "passed in" direction (i.e. vertical/horizontal)
-  let row = startRow;
-  let column = startColumn;
-
-  // if the current move is not on the inBoard
-  if (!isOnBoard(row, column)) {
-    // return initial returnObject
-    return returnObject;
-  }
-
-  // if the adjacent piece belongs to the current player
-  if (board[row][column] === player) {
-    // return initial returnObject
-    return returnObject;
-  }
-
-  // while we have not seen the current players piece
-  while (board[row][column] !== player) {
-    // if we have not seen the opponents piece before we see a blank space
-    if (board[row][column] === null) {
-      // return: we cannot flip pieces in the passed in direction and the boardState is unchanged
-      return returnObject;
-    }
-
-    // if we see the opponents piece
-    if (board[row][column] === opponent) {
-      // record the current position for our output
-      flipPositions.push({
-        row,
-        column,
-      });
-    }
-
-    // update the row index we are checking
-    row += vertical;
-    // update the column index we are checking
-    column += horizontal;
-
-    // if we go off the board after we update the indices we are checking
-    if (row > 7 || column > 7 || row < 0 || column < 0) {
-      // return we cannot flip pieces in this direction and the boardState is unchanged
-      return returnObject;
-    }
-  }
-
-  // for each of the positions we need to flip at
-  for (let index = 0; index < flipPositions.length; index++) {
-    // flip the pieces to the current players color
-    returnObject.boardState[flipPositions[index].row][flipPositions[index].column] = player;
-  }
-
-  // record that we were able to flip pieces
-  returnObject.piecesFlipped = true;
-
-  // return that pieces were flipped and return the updated board state
-  return returnObject;
-};
-
-/**
- * checkForValidMoves
- *
- * checks null squares untill it finds a valid move,if it finds a valid
- * move it returns the passed in boardState/player, if it iterates
- * through the whole boardState but does not find a valid move it returns
- * the boardState and the oppisite player
- *
- * @param {array[][]} boardState - the updated board state
- * @param {boolean} player - the next player
- *
- * @returns {Object} - the board state and the correct player
- */
-const checkForValidMoves = (boardState, player) => {
-  // set the value of the players opponent
-  const opponent = setOpponent(player);
-
-  // for each row on the board
-  for (let row = 0; row <= 7; row++) {
-    // for each column on the board
-    for (let column = 0; column <= 7; column++) {
-      // if the space we are currently checking is EMPTY
-      if (boardState[row][column] === null) {
-        // for each distinct vertical translation we can apply
-        for (let vertical = -1; vertical <= 1; vertical++) {
-          // for each distinct horizontal translation we can apply
-          for (let horizontal = -1; horizontal <= 1; horizontal++) {
-            // if pieces were flipped in any particular direction
-            if (flipPieces(
-              row + vertical,
-              column + horizontal,
-              vertical,
-              horizontal,
-              player,
-              opponent,
-              boardState,
-            ).piecesFlipped) {
-              // return the passed in player because they have at least one valid move
-              return player;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // player has no valid moves, return this players opponent
-  return opponent;
-};
-
-/**
- * processMove
- *
- * The purpose of this function is to determine if the player has made a valid move, and if
- * the move is indeed valid, it will implement that move and transfer control to the appropriate
- * player. If the players move is not valid, it forces the original player to try again
- *
- * @param {number} moveRow the row position of the space chosen by the current player
- * @param {number} moveColumn the column position of the space chosen by the current player
- * @param {number} playerState the current player state
- * @param {array[][]} boardState the current board state
- *
- * @returns {Object} the next player, boardState, and isGameOver status
- */
-// const processMove = (moveRow, moveColumn, playerState, boardState) => {
-//   // make local copy of the player state
-//   let player = playerState;
-
-//   // make local copy of the board state
-//   let board = deepCopy(boardState);
-
-//   // make local copy of the isGameOver state
-//   let isGameOver = false;
-
-//   // instantiate opponent
-//   const opponent = setOpponent(player);
-
-//   // instantiate piecesFlipped
-//   let piecesFlipped = false;
-
-//   // instantiate tryFlip
-//   let tryFlip = {};
-
-//   // instantiate adjacentRow
-//   let adjacentRow = 0;
-
-//   // instantiate adjacentColumn
-//   let adjacentColumn = 0;
-
-//   // for each distinct vertical translation we can apply
-//   for (let vertical = -1; vertical <= 1; vertical++) {
-//     // for each distinct horizontal translation we can apply
-//     for (let horizontal = -1; horizontal <= 1; horizontal++) {
-//       // store the value of the adjacent row index
-//       adjacentRow = moveRow + vertical;
-
-//       // store the value of the adjacent column index
-//       adjacentColumn = moveColumn + horizontal;
-
-//       // try to flip pieces
-//       tryFlip = flipPieces(
-//         adjacentRow,
-//         adjacentColumn,
-//         vertical,
-//         horizontal,
-//         player,
-//         opponent,
-//         board,
-//       );
-
-//       // if pieces were flipped
-//       if (tryFlip.piecesFlipped) {
-//         // update the boardState by replacing its contents with the contents of tryFlip.boardState
-//         board = deepCopy(tryFlip.boardState);
-
-//         // set piecesFlipped to true
-//         piecesFlipped = true;
-//       }
-//     }
-//   }
-
-//   // if pieces were flipped
-//   if (piecesFlipped) {
-//     // place the players piece in the spot they have chosen to play
-//     board[moveRow][moveColumn] = player;
-
-//     // set player value to the value of opponent if the opponent has at least one valid move to make
-//     player = checkForValidMoves(board, opponent);
-
-//     // if player is the player that just played, and that same player has no valid moves
-//     if (player === board[moveRow][moveColumn] && checkForValidMoves(board, player) === opponent) {
-//       // set isGameOver to true
-//       isGameOver = true;
-//     }
-
-//     // return the updated boardState, the appropriate player, and whether or not the game is over
-//     return {
-//       boardState: board,
-//       player,
-//       isGameOver,
-//     };
-//   }
-
-//   // no pieces were flipped, return the same game state values that were passed in
-//   return {
-//     boardState: board,
-//     player,
-//     isGameOver,
-//   };
-// };
-
-
-/**
  * isOnBoard
  *
  * @param {number} moveRow,
@@ -342,7 +108,17 @@ const isOnBoard = (moveRow, moveColumn) => {
   return !(moveRow >= 8 || moveColumn >= 8 || moveRow <= -1 || moveColumn <= -1);
 };
 
+/**
+ * 
+ * @param {*} moveRow 
+ * @param {*} moveColumn 
+ * @param {*} playerState 
+ * @param {*} boardState 
+ * @returns 
+ */
 const processMove = (moveRow, moveColumn, playerState, boardState) => {
+  console.log(';alsdjf;lkajsdlk;fjal;skdfjl;kasdjf');
+
   let player = playerState;
 
   let board = deepCopy(boardState);
@@ -352,14 +128,19 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
   const opponent = setOpponent(player);
 
   if(isValidMove(board, player, moveRow, moveColumn)) {
-    board[moveRow][moveColumn] = player;
     board = deepCopy(flipPiecesInAllDirections(moveRow, moveColumn, board, player));
+    board[moveRow][moveColumn] = player
     player = opponent;
     return {
       boardState: board,
       player,
       isGameOver,
     }
+  }
+  return {
+    boardState: board,
+    player,
+    isGameOver
   }
 }
 
@@ -385,7 +166,6 @@ const getEndPieceData = (
   verticalTranslation,
   horizontalTranslation,
 ) => {
-
   // initialize endPieceData 
   const endPieceData = {
     row: null,
@@ -398,6 +178,15 @@ const getEndPieceData = (
   // store the next indices in the given direction
   let nextRow = moveRow + verticalTranslation;
   let nextColumn = moveColumn + horizontalTranslation;
+  // console.log(nextRow + ' is the next row and    ' + nextColumn + ' is the next col');
+  // if(typeof board[nextRow] === undefined) {
+  //   return endPieceData;
+  // }
+
+  // exit if next row/column are not on the board
+  if(!isOnBoard(nextRow, nextColumn)) {
+    return endPieceData;
+  }
 
   // store the identity of the opponent 
   const opponent = setOpponent(player);
@@ -405,9 +194,18 @@ const getEndPieceData = (
   if (board[nextRow][nextColumn] !== opponent) {
     return endPieceData;
   }
-
+  
   // while we have not seen a valid end piece
   while (board[nextRow][nextColumn] !== player) {
+    console.log(board[nextRow][nextColumn]);
+    
+    // if(typeof board[nextRow] === undefined) {
+    //   return endPieceData;
+    // }
+
+    if(!isOnBoard(nextRow, nextColumn)) {
+      return endPieceData;
+    }
 
     // if we hit an empty space or move past the edge of the board
     if (board[nextRow][nextColumn] === null) {
@@ -418,6 +216,9 @@ const getEndPieceData = (
     // move indices to the next row/column in this direction
     nextRow += verticalTranslation;
     nextColumn += horizontalTranslation;
+    if(!isOnBoard(nextRow, nextColumn)) {
+      return endPieceData;
+    }
   }
 
   // store and return the players end piece
@@ -502,15 +303,7 @@ const getValidMoves = (boardState, player) => {
     isAnyValidMoves
   }
 }
-// make a clean copy of the board
-// initialize a flag to indicate if there are any valid moves
-// for every space on the board
-// if this space is empty
-// if this is a valid move for the current player
-// mark this space as valid
-// set flag to be true
-// return the boardstate and the flag
-//----------------------------------------------------------------------------------------------------------------------
+
 /**
  * flipPiecesInAllDirections
  *
@@ -518,21 +311,29 @@ const getValidMoves = (boardState, player) => {
  * to return the updated boardState
  */
 const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
+    // make a clean copy of the board
     let board = deepCopy(boardState);
+
+    // initalized the endPIeceData object this function will return
     let endPieceData = {};
+
     // for each distinct vertical translation we can apply
     for (let vertical = -1; vertical <= 1; vertical++) {
       // for each distinct horizontal translation we can apply
       for (let horizontal = -1; horizontal <= 1; horizontal++) {
-        console.log(board);
-        
-        endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
 
+        // attempt to store the endPieceData
+        endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
+        
+        // if the endPieceExists
         if(endPieceData.row) {
+
+          // use the endPieceData to flip appropriate pieces in the appropriate direction
           board = deepCopy(flipPiecesInOneDirection(board, player, endPieceData, moveRow, moveColumn));
         }
       }
     }
+    // return the board
     return board;
 }
 
@@ -586,7 +387,9 @@ const flipPiecesInOneDirection = (boardState, player, endPieceData, moveRow, mov
       case 'southwest':
         board[moveRow + index][moveColumn - index] = player;
         break;
+
       default:
+        console.log('Something is not right here!')
         break;
     }
   }
@@ -671,10 +474,8 @@ const getNumberOfPiecesToFlip = (moveRow, moveColumn, endPieceRow, endPieceColum
 }
 
 // export functions needed in other files
-exports.flipPieces = flipPieces;
 exports.processMove = processMove;
 exports.deepCopy = deepCopy;
-exports.checkForValidMoves = checkForValidMoves;
 exports.countScore = countScore;
 exports.flipPiecesInOneDirection = flipPiecesInOneDirection;
 exports.flipPiecesInAllDirections = flipPiecesInAllDirections;
