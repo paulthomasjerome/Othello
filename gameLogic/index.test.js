@@ -300,7 +300,7 @@ describe('flipPiecesInAllDirections', () => {
     expect(flipPiecesResult).toEqual(boardAfter);
   });
 
-  it.only('Should handle flipping multiple pieces in the northwest corner', () => {
+  it('Should handle flipping multiple pieces in the northwest corner', () => {
     const board = [
       [null,    1,    0, null, null, null, null, null],
       [   1,    1, null, null, null, null, null, null],

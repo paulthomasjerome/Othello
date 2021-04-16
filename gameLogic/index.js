@@ -137,6 +137,28 @@ const processMove = (moveRow, moveColumn, playerState, boardState) => {
     // set a player piece down at the placement they have chosen
     board[moveRow][moveColumn] = player
     
+    // if the opponent has valid moves to make
+    if(!getValidMoves(board, opponent).isAnyValidMoves) {
+      // if the current player also has no valid moves
+      if(!getValidMoves(board, player).isAnyValidMoves) {
+          // the game is over
+          isGameOver = true;
+
+          // return game state
+          return {
+            boardState: board,
+            player,
+            isGameOver,
+          }
+      }
+      // same player goes again
+      return {
+        boardState: board,
+        player,
+        isGameOver,
+      }
+    } 
+
     // change players
     player = opponent;
 
@@ -326,9 +348,9 @@ const flipPiecesInAllDirections = (moveRow, moveColumn, boardState, player) => {
 
         // attempt to store the endPieceData
         endPieceData = getEndPieceData(board, player, moveRow, moveColumn, vertical, horizontal);
-        console.log(endPieceData);
+
         // if the endPieceExists
-        if(endPieceData.row) {
+        if(endPieceData.row !== null && endPieceData.column !== null) {
           // use the endPieceData to flip appropriate pieces in the appropriate direction
           board = deepCopy(flipPiecesInOneDirection(board, player, endPieceData, moveRow, moveColumn));
         }
