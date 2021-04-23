@@ -491,22 +491,22 @@ describe('processMove', () => {
     expect(processMoveResult.boardState).toEqual(boardAfter);
   });
 
-  // it('Should end the game when a player has generated a stalemate', () => {
-  //   const board2 = [
-  //     [   0,    0,    0,    0,    0,    0,    0, null],
-  //     [   0,    0,    0,    0,    0,    0,    0,    1],
-  //     [   0,    0,    0,    0,    0,    0,    0,    0],
-  //     [   0,    0,    0,    0,    0,    0,    0, null],
-  //     [   0,    0,    0,    0,    0,    0, null, null],
-  //     [   0,    0,    0,    0,    0,    0, null,    1],
-  //     [   0,    0,    0,    0,    0,    0,    0, null],
-  //     [   0,    0,    0,    0,    0,    0,    0,    0],
-  //   ];
+  it('Should end the game when a player has generated a stalemate', () => {
+    const board2 = [
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0,    0,    1],
+      [   0,    0,    0,    0,    0,    0,    0,    0],
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0, null, null],
+      [   0,    0,    0,    0,    0,    0, null,    1],
+      [   0,    0,    0,    0,    0,    0,    0, null],
+      [   0,    0,    0,    0,    0,    0,    0,    0],
+    ];
 
-  //   const processMoveResult = processMove(0, 7, 0, board2);
+    const processMoveResult = processMove(0, 7, 0, board2);
 
-  //   expect(processMoveResult.isGameOver).toBe(true);
-  // });
+    expect(processMoveResult.isGameOver).toBe(true);
+  });
 });
 
 describe('getEndPieceData', () => {
@@ -690,4 +690,54 @@ describe('getEndPieceData', () => {
     expect(wouldFlipResult.column).toEqual(2);
   });
 
+});
+
+describe('getValidMoves', () => {
+  it('should return false when there are no valid moves', () => {
+
+    const board = [
+      [null,    1, null,    1, null,    1, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null,    1, null,    0, null,    1, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null,    1, null,    1, null,    1, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    expect(getValidMoves(board, 0).isAnyValidMoves).toBe(false);
+  });
+
+  it('should return true when there is at least one valid move', () => {
+
+    const board = [
+      [null, null, null, null, null,    0,    1, null],
+      [null, null, null, null, null,    0,    0,    0],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    expect(getValidMoves(board, 0).isAnyValidMoves).toBe(true);
+  });
+
+  it('should return true when there is multiple valid moves', () => {
+
+    const board = [
+      [null, null, null, null, null,    0,    1, null],
+      [null, null, null, null, null,    0,    0,    0],
+      [null, null, null, null, null, null,    1, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null],
+    ];
+
+    expect(getValidMoves(board, 0).isAnyValidMoves).toBe(true);
+  });
 });

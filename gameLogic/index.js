@@ -265,12 +265,14 @@ const getEndPieceData = (
  * @return {boolean}
  */
 const isValidMove = (boardState, player, moveRow, moveColumn) => {
+  // make a local copy of the board
   let board = deepCopy(boardState);
+
   // check if this move is on the board
   if (!isOnBoard(moveRow, moveColumn)) {
     return false;
   }
-  // check if this move flips pieces
+
   // for each direction extending from where the move was made
   for (let verticalTranslation = -1; verticalTranslation <= 1; verticalTranslation++) {
     for (let horizontalTranslation = -1; horizontalTranslation <= 1; horizontalTranslation++) {
@@ -282,7 +284,7 @@ const isValidMove = (boardState, player, moveRow, moveColumn) => {
         moveColumn,
         verticalTranslation,
         horizontalTranslation,
-      ).row) {
+      ).row !== null) {
         // return true
         return true;
       }
